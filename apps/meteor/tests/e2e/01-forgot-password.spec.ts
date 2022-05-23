@@ -1,39 +1,42 @@
 import { test, expect } from '@playwright/test';
 
-import LoginPage from './utils/pageobjects/LoginPage';
 import { VALID_EMAIL, INVALID_EMAIL, INVALID_EMAIL_WITHOUT_MAIL_PROVIDER } from './utils/mocks/userAndPasswordMock';
+import { PageLogin } from './page-objects';
 
 test.describe('[Forgot Password]', () => {
-	let loginPage: LoginPage;
+	let pageLogin: PageLogin;
 
-	test.beforeEach(async ({ page, baseURL }) => {
-		loginPage = new LoginPage(page);
-		const baseUrl = baseURL as string;
-		await loginPage.goto(baseUrl);
-		await loginPage.gotToForgotPassword();
+	test.beforeEach(async ({ page }) => {
+		pageLogin = new PageLogin(page);
+
+		await page.goto('/');
+		await pageLogin.btnPasswordForgot.click();
 	});
 
 	test('expect be required', async () => {
-		loginPage.submit();
+		await pageLogin.btnFormSubmit.click();
 
-		await expect(loginPage.emailInvalidText()).toBeVisible();
+		expect(await pageLogin.textErrorEmail.isVisible()).toBeTruthy();
 	});
 
 	test('expect invalid for email without domain', async () => {
-		await loginPage.emailField().type(INVALID_EMAIL_WITHOUT_MAIL_PROVIDER);
-		await loginPage.submit();
-		await expect(loginPage.emailInvalidText()).toBeVisible();
+		await pageLogin.inputEmail.type(INVALID_EMAIL_WITHOUT_MAIL_PROVIDER);
+		await pageLogin.btnFormSubmit.click();
+
+		expect(await pageLogin.textErrorEmail.isVisible()).toBeTruthy();
 	});
 
 	test('expect be invalid for email with invalid domain', async () => {
-		await loginPage.emailField().type(INVALID_EMAIL);
-		await loginPage.submit();
-		await expect(loginPage.emailInvalidText()).toBeVisible();
+		await pageLogin.inputEmail.type(INVALID_EMAIL);
+		await pageLogin.btnFormSubmit.click();
+
+		expect(await pageLogin.textErrorEmail.isVisible()).toBeTruthy();
 	});
 
 	test('expect user type a valid email', async () => {
-		await loginPage.emailField().type(VALID_EMAIL);
-		await loginPage.submit();
-		await expect(loginPage.getToastMessageSuccess()).toBeVisible();
+		await pageLogin.inputEmail.type(VALID_EMAIL);
+		await pageLogin.btnFormSubmit.click();
+
+		expect(await pageLogin.boxToastSuccess.isVisible()).toBeTruthy();
 	});
 });

@@ -3,17 +3,17 @@ import { v4 as uuid } from 'uuid';
 
 import { BASE_API_URL } from './utils/mocks/urlMock';
 import { adminLogin, validUserInserted, registerUser } from './utils/mocks/userAndPasswordMock';
-import LoginPage from './utils/pageobjects/LoginPage';
 import MainContent from './utils/pageobjects/MainContent';
 import SideNav from './utils/pageobjects/SideNav';
 import Administration from './utils/pageobjects/Administration';
 import PreferencesMainContent from './utils/pageobjects/PreferencesMainContent';
+import { PageLogin } from './page-objects';
 
 const apiSessionHeaders = { 'X-Auth-Token': '', 'X-User-Id': '' };
 
 test.describe.skip('[Settings]', async () => {
 	let page: Page;
-	let loginPage: LoginPage;
+	let pageLogin: PageLogin;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let userPreferences: PreferencesMainContent;
@@ -22,13 +22,13 @@ test.describe.skip('[Settings]', async () => {
 		const context = await browser.newContext();
 		page = await context.newPage();
 
-		loginPage = new LoginPage(page);
+		pageLogin = new PageLogin(page);
 		mainContent = new MainContent(page);
 		sideNav = new SideNav(page);
 		userPreferences = new PreferencesMainContent(page);
 
-		await loginPage.goto('/');
-		await loginPage.login(validUserInserted);
+		await page.goto('/');
+		await pageLogin.doLogin(validUserInserted);
 		await sideNav.general().click();
 	});
 
@@ -396,7 +396,7 @@ test.describe.skip('[Settings]', async () => {
 
 test.describe.skip('[Settings (admin)]', async () => {
 	let page: Page;
-	let loginPage: LoginPage;
+	let pageLogin: PageLogin;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let admin: Administration;
@@ -404,14 +404,14 @@ test.describe.skip('[Settings (admin)]', async () => {
 	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
 		page = await context.newPage();
+		pageLogin = new PageLogin(page);
 
-		loginPage = new LoginPage(page);
 		mainContent = new MainContent(page);
 		sideNav = new SideNav(page);
 		admin = new Administration(page);
 
-		await loginPage.goto('/');
-		await loginPage.login(adminLogin);
+		await page.goto('/');
+		await pageLogin.doLogin(adminLogin);
 		await sideNav.general().click();
 	});
 

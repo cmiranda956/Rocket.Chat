@@ -2,10 +2,10 @@ import { test, expect, Browser } from '@playwright/test';
 
 import MainContent from './utils/pageobjects/MainContent';
 import SideNav from './utils/pageobjects/SideNav';
-import LoginPage from './utils/pageobjects/LoginPage';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
+import { PageLogin } from './page-objects';
 
-let loginPage: LoginPage;
+let pageLogin: PageLogin;
 let mainContent: MainContent;
 let sideNav: SideNav;
 
@@ -17,13 +17,13 @@ async function initConfig(
 	const context = await browser.newContext(options);
 	const page = await context.newPage();
 	const URL = baseURL as string;
-	loginPage = new LoginPage(page);
-	await loginPage.goto(URL);
+	pageLogin = new PageLogin(page);
+	await page.goto(URL);
 
-	await loginPage.login(adminLogin);
+	await pageLogin.doLogin(adminLogin);
 	sideNav = new SideNav(page);
 	mainContent = new MainContent(page);
-	return { loginPage, sideNav, mainContent };
+	return { pageLogin, sideNav, mainContent };
 }
 
 test.describe('[Resolution]', function () {

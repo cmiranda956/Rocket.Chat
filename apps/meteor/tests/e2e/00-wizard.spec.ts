@@ -4,21 +4,21 @@ import SetupWizard from './utils/pageobjects/SetupWizard';
 import { VALID_EMAIL, adminLogin } from './utils/mocks/userAndPasswordMock';
 import { setupWizardStepRegex } from './utils/mocks/urlMock';
 import { HOME_SELECTOR } from './utils/mocks/waitSelectorsMock';
-import LoginPage from './utils/pageobjects/LoginPage';
+import { PageLogin } from './page-objects';
 
 test.describe('[Wizard]', () => {
 	let setupWizard: SetupWizard;
-	let loginPage: LoginPage;
+	let pageLogin: PageLogin;
+
 	test.beforeEach(async ({ page }) => {
 		setupWizard = new SetupWizard(page);
-		loginPage = new LoginPage(page);
+		pageLogin = new PageLogin(page);
 	});
 
 	test.describe('[Step 2]', async () => {
-		test.beforeEach(async ({ baseURL }) => {
-			const baseUrl = baseURL;
-			await setupWizard.goto(baseUrl as string);
-			await loginPage.login(adminLogin);
+		test.beforeEach(async () => {
+			await setupWizard.goto('/');
+			await pageLogin.doLogin(adminLogin);
 		});
 
 		test('expect required field alert showed when user dont inform data', async () => {
@@ -34,7 +34,7 @@ test.describe('[Wizard]', () => {
 	test.describe('[Step 3]', async () => {
 		test.beforeEach(async () => {
 			await setupWizard.goto('');
-			await loginPage.login(adminLogin);
+			await pageLogin.doLogin(adminLogin);
 			await setupWizard.stepTwoSuccess();
 		});
 
@@ -64,7 +64,7 @@ test.describe('[Wizard]', () => {
 	test.describe('[Final Step]', async () => {
 		test.beforeEach(async () => {
 			await setupWizard.goto('');
-			await loginPage.login(adminLogin);
+			await pageLogin.doLogin(adminLogin);
 			await setupWizard.stepTwoSuccess();
 			await setupWizard.stepThreeSuccess();
 		});

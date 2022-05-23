@@ -1,44 +1,46 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
 import FlexTab from './utils/pageobjects/FlexTab';
 import MainContent from './utils/pageobjects/MainContent';
 import SideNav from './utils/pageobjects/SideNav';
-import LoginPage from './utils/pageobjects/LoginPage';
 import Global from './utils/pageobjects/Global';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
-import { LOCALHOST } from './utils/mocks/urlMock';
 import { publicChannelCreated, setPublicChannelCreated } from './utils/mocks/checks';
 import { publicChannelName } from './utils/mocks/channel';
 import { targetUser } from './utils/mocks/interations';
+import { PageLogin } from './page-objects';
 
 let hasUserAddedInChannel = false;
 
 test.describe('[Channel]', () => {
+	let page: Page;
+	let pageLogin: PageLogin;
 	let flexTab: FlexTab;
-	let loginPage: LoginPage;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let global: Global;
 
-	test.beforeAll(async ({ browser, baseURL }) => {
+	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
-		const page = await context.newPage();
-		const URL = baseURL || LOCALHOST;
-		loginPage = new LoginPage(page);
-		await loginPage.goto(URL);
 
-		await loginPage.login(adminLogin);
+		page = await context.newPage();
+		pageLogin = new PageLogin(page);
 		sideNav = new SideNav(page);
 		mainContent = new MainContent(page);
 		flexTab = new FlexTab(page);
 		global = new Global(page);
 
+		await page.goto('/');
+		await pageLogin.doLogin(adminLogin);
+
 		if (!publicChannelCreated) {
 			await sideNav.createChannel(publicChannelName, false);
-			await setPublicChannelCreated(true);
+			setPublicChannelCreated(true);
 		}
+
 		await sideNav.openChannel('general');
 	});
+
 	test.describe('[Search]', () => {
 		test.describe('[SpotlightSearch]', async () => {
 			test.describe('general:', () => {

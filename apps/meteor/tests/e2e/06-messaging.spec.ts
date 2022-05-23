@@ -2,49 +2,49 @@ import { expect, test, Browser } from '@playwright/test';
 
 import MainContent from './utils/pageobjects/MainContent';
 import SideNav from './utils/pageobjects/SideNav';
-import LoginPage from './utils/pageobjects/LoginPage';
 import FlexTab from './utils/pageobjects/FlexTab';
 import { adminLogin, validUserInserted } from './utils/mocks/userAndPasswordMock';
 import { ChatContext } from './utils/types/ChatContext';
+import { PageLogin } from './page-objects';
 
-const createBrowserContextForChat = async (browser: Browser, baseURL: string): Promise<ChatContext> => {
+const createBrowserContextForChat = async (browser: Browser): Promise<ChatContext> => {
 	const page = await browser.newPage();
 
-	const loginPage = new LoginPage(page);
+	const pageLogin = new PageLogin(page);
 	const mainContent = new MainContent(page);
 	const sideNav = new SideNav(page);
 
-	await loginPage.goto(baseURL);
-	await loginPage.login(validUserInserted);
+	await page.goto('/');
+	await pageLogin.doLogin(validUserInserted);
 
 	return { mainContent, sideNav };
 };
 
 test.describe('[Messaging]', () => {
-	let loginPage: LoginPage;
+	let pageLogin: PageLogin;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let flexTab: FlexTab;
-	test.beforeAll(async ({ browser, baseURL }) => {
+
+	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
 		const page = await context.newPage();
 
-		loginPage = new LoginPage(page);
+		pageLogin = new PageLogin(page);
 		mainContent = new MainContent(page);
 		sideNav = new SideNav(page);
 		flexTab = new FlexTab(page);
 
-		await loginPage.goto(baseURL as string);
-
-		await loginPage.login(adminLogin);
+		await page.goto('/');
+		await pageLogin.doLogin(adminLogin);
 	});
 
 	test.describe('[Normal messaging]', async () => {
 		let anotherContext: ChatContext;
 
 		test.describe('[General channel]', async () => {
-			test.beforeAll(async ({ browser, baseURL }) => {
-				anotherContext = await createBrowserContextForChat(browser, baseURL as string);
+			test.beforeAll(async ({ browser }) => {
+				anotherContext = await createBrowserContextForChat(browser);
 				await anotherContext.sideNav.general().click();
 				await anotherContext.mainContent.sendMessage('Hello');
 				await sideNav.general().click();
@@ -62,8 +62,8 @@ test.describe('[Messaging]', () => {
 			});
 		});
 		test.describe('[Public channel]', async () => {
-			test.beforeAll(async ({ browser, baseURL }) => {
-				anotherContext = await createBrowserContextForChat(browser, baseURL as string);
+			test.beforeAll(async ({ browser }) => {
+				anotherContext = await createBrowserContextForChat(browser);
 				await anotherContext.sideNav.findForChat('public channel');
 				await anotherContext.mainContent.sendMessage('Hello');
 				await sideNav.findForChat('public channel');
@@ -82,8 +82,8 @@ test.describe('[Messaging]', () => {
 		});
 
 		test.describe('[Private channel]', async () => {
-			test.beforeAll(async ({ browser, baseURL }) => {
-				anotherContext = await createBrowserContextForChat(browser, baseURL as string);
+			test.beforeAll(async ({ browser }) => {
+				anotherContext = await createBrowserContextForChat(browser);
 				await anotherContext.sideNav.findForChat('private channel');
 				await anotherContext.mainContent.sendMessage('Hello');
 				await sideNav.findForChat('private channel');
@@ -102,8 +102,8 @@ test.describe('[Messaging]', () => {
 		});
 
 		test.describe('[Direct Message]', async () => {
-			test.beforeAll(async ({ browser, baseURL }) => {
-				anotherContext = await createBrowserContextForChat(browser, baseURL as string);
+			test.beforeAll(async ({ browser }) => {
+				anotherContext = await createBrowserContextForChat(browser);
 				await anotherContext.sideNav.findForChat('rocketchat.internal.admin.test');
 				await anotherContext.mainContent.sendMessage('Hello');
 				await sideNav.findForChat('user.name.test');

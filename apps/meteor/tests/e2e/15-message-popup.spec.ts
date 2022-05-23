@@ -2,26 +2,27 @@ import { Page, test, expect } from '@playwright/test';
 
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
 import { userMock } from './utils/mocks/userMock';
-import LoginPage from './utils/pageobjects/LoginPage';
 import MainContent from './utils/pageobjects/MainContent';
 import SideNav from './utils/pageobjects/SideNav';
+import { PageLogin } from './page-objects';
 
 test.describe('[Message Popup]', () => {
 	let page: Page;
-	let loginPage: LoginPage;
+	let pageLogin: PageLogin;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 
 	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
-		page = await context.newPage();
 
-		loginPage = new LoginPage(page);
+		page = await context.newPage();
+		pageLogin = new PageLogin(page);
+
 		mainContent = new MainContent(page);
 		sideNav = new SideNav(page);
 
-		await loginPage.goto('/');
-		await loginPage.login(adminLogin);
+		await page.goto('/');
+		await pageLogin.doLogin(adminLogin);
 		await sideNav.openChannel('public channel');
 	});
 

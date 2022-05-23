@@ -1,36 +1,39 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import faker from '@faker-js/faker';
 
-import LoginPage from './utils/pageobjects/LoginPage';
 import { adminLogin, validUserInserted } from './utils/mocks/userAndPasswordMock';
 import Administration from './utils/pageobjects/Administration';
 import SideNav from './utils/pageobjects/SideNav';
+import { PageLogin } from './page-objects';
 
 test.describe('[Rocket.Chat Settings based permissions]', () => {
+	let page: Page;
+	let pageLogin: PageLogin;
 	let admin: Administration;
 	let sideNav: SideNav;
-	let loginPage: LoginPage;
+
 	const newHomeTitle = faker.animal.type();
 	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
-		const page = await context.newPage();
+		page = await context.newPage();
+		pageLogin = new PageLogin(page);
+
 		sideNav = new SideNav(page);
 		admin = new Administration(page);
-		loginPage = new LoginPage(page);
 	});
 
 	test.describe('[Give User Permissions]', async () => {
 		test.beforeAll(async () => {
-			await loginPage.goto('/');
-			await loginPage.login(adminLogin);
+			await page.goto('/');
+			await pageLogin.doLogin(adminLogin);
 			await sideNav.sidebarUserMenu().click();
 			await sideNav.admin().click();
 			await admin.permissionsLink().click();
 		});
 
 		test.afterAll(async () => {
-			await loginPage.goto('/home');
-			await loginPage.logout();
+			await page.goto('/home');
+			await pageLogin.doLogout();
 		});
 
 		test('Set permission for user to manage settings', async () => {
@@ -57,16 +60,16 @@ test.describe('[Rocket.Chat Settings based permissions]', () => {
 
 	test.describe('Test new user setting permissions', async () => {
 		test.beforeAll(async () => {
-			await loginPage.goto('/');
-			await loginPage.login(validUserInserted);
+			await page.goto('/');
+			await pageLogin.doLogin(validUserInserted);
 			await sideNav.sidebarUserMenu().click();
 			await sideNav.admin().click();
 			await admin.settingsLink().click();
 			await admin.layoutSettingsButton().click();
 		});
 		test.afterAll(async () => {
-			await loginPage.goto('/home');
-			await loginPage.logout();
+			await page.goto('/home');
+			await pageLogin.doLogout();
 		});
 
 		test('expect new permissions is enabled for user', async () => {
@@ -77,8 +80,8 @@ test.describe('[Rocket.Chat Settings based permissions]', () => {
 
 	test.describe('[Verify settings change and cleanup]', async () => {
 		test.beforeAll(async () => {
-			await loginPage.goto('/');
-			await loginPage.login(adminLogin);
+			await page.goto('/');
+			await pageLogin.doLogin(adminLogin);
 			await sideNav.sidebarUserMenu().click();
 			await sideNav.admin().click();
 			await admin.settingsLink().click();
@@ -87,8 +90,8 @@ test.describe('[Rocket.Chat Settings based permissions]', () => {
 		});
 
 		test.afterAll(async () => {
-			await loginPage.goto('/home');
-			await loginPage.logout();
+			await page.goto('/home');
+			await pageLogin.doLogout();
 		});
 
 		test('New settings value visible for admin as well', async () => {

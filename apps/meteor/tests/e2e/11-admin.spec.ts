@@ -1,29 +1,34 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-import LoginPage from './utils/pageobjects/LoginPage';
 import SideNav from './utils/pageobjects/SideNav';
 import { adminLogin, ROCKET_CAT } from './utils/mocks/userAndPasswordMock';
 import Administration from './utils/pageobjects/Administration';
 import FlexTab from './utils/pageobjects/FlexTab';
 import { ROCKET_CAT_SELECTOR } from './utils/mocks/waitSelectorsMock';
 import { Checkbox } from './utils/enums/Checkbox';
+import { PageLogin } from './page-objects';
 
 test.describe('[Administration]', () => {
-	let loginPage: LoginPage;
+	let page: Page;
+	let pageLogin: PageLogin;
 	let sideNav: SideNav;
 	let admin: Administration;
 	let flexTab: FlexTab;
 	const checkBoxesSelectors = ['Direct', 'Public', 'Private', 'Omnichannel', 'Discussions', 'Teams'];
+
 	test.beforeAll(async ({ browser, baseURL }) => {
 		const context = await browser.newContext();
-		const page = await context.newPage();
-		loginPage = new LoginPage(page);
+
+		page = await context.newPage();
+		pageLogin = new PageLogin(page);
 		sideNav = new SideNav(page);
 		flexTab = new FlexTab(page);
 		admin = new Administration(page);
-		await loginPage.goto(baseURL as string);
-		await loginPage.login(adminLogin);
+
+		await page.goto(baseURL as string);
+		await pageLogin.doLogin(adminLogin);
 	});
+
 	test.describe('[Admin View]', () => {
 		test.beforeAll(async () => {
 			await sideNav.sidebarUserMenu().click();
@@ -178,34 +183,6 @@ test.describe('[Administration]', () => {
 				});
 			});
 		});
-
-		// TODO verify how is make o invite
-		// 	describe('[Flex Tab] ', () => {
-		// 		describe('send invitation:', () => {
-		// 			before(() => {
-		// 				flexTab.usersSendInvitationTab.waitForVisible(5000);
-		// 				flexTab.usersSendInvitationTab.click();
-		// 				flexTab.usersSendInvitationTextArea.waitForVisible(5000);
-		// 			});
-
-		// 			after(() => {
-		// 				flexTab.usersSendInvitationTab.waitForVisible(5000);
-		// 				flexTab.usersSendInvitationTab.click();
-		// 				flexTab.usersSendInvitationTextArea.waitForVisible(5000, true);
-		// 			});
-
-		// 			test('it should show the send invitation text area', () => {
-		// 				flexTab.usersSendInvitationTextArea.should('be.visible');
-		// 			});
-
-		// 			it('it should show the cancel button', () => {
-		// 				flexTab.usersButtonCancel.should('be.visible');
-		// 			});
-
-		// 			it('it should show the send button', () => {
-		// 				flexTab.usersSendInvitationSend.should('be.visible');
-		// 			});
-		// 		});
 
 		test.describe('[General Settings]', () => {
 			test.beforeAll(async () => {
