@@ -15,6 +15,10 @@ export abstract class BasePage {
 		return this.page.locator('.toast-message');
 	}
 
+	get boxModalConfirm(): Locator {
+		return this.page.locator('.rcx-modal .rcx-button--primary-danger');
+	}
+
 	public async keyPress(key: string): Promise<void> {
 		await this.page.keyboard.press(key);
 	}

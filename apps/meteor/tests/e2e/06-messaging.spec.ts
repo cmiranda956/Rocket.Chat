@@ -1,27 +1,29 @@
-import { expect, test, Browser } from '@playwright/test';
+import { expect, test, Browser, Page } from '@playwright/test';
 
-import MainContent from './utils/pageobjects/MainContent';
-import SideNav from './utils/pageobjects/SideNav';
-import FlexTab from './utils/pageobjects/FlexTab';
 import { adminLogin, validUserInserted } from './utils/mocks/userAndPasswordMock';
-import { ChatContext } from './utils/types/ChatContext';
-import { PageLogin } from './page-objects';
+import { Login, MainContent, SideNav, FlexTab } from './page-objects';
+
+type ChatContext = {
+	mainContent: MainContent;
+	sideNav: SideNav;
+	page: Page;
+};
 
 const createBrowserContextForChat = async (browser: Browser): Promise<ChatContext> => {
 	const page = await browser.newPage();
 
-	const pageLogin = new PageLogin(page);
+	const login = new Login(page);
 	const mainContent = new MainContent(page);
 	const sideNav = new SideNav(page);
 
 	await page.goto('/');
-	await pageLogin.doLogin(validUserInserted);
+	await login.doLogin(validUserInserted);
 
-	return { mainContent, sideNav };
+	return { mainContent, sideNav, page };
 };
 
 test.describe('[Messaging]', () => {
-	let pageLogin: PageLogin;
+	let login: Login;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let flexTab: FlexTab;
@@ -30,13 +32,13 @@ test.describe('[Messaging]', () => {
 		const context = await browser.newContext();
 		const page = await context.newPage();
 
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 		mainContent = new MainContent(page);
 		sideNav = new SideNav(page);
 		flexTab = new FlexTab(page);
 
 		await page.goto('/');
-		await pageLogin.doLogin(adminLogin);
+		await login.doLogin(adminLogin);
 	});
 
 	test.describe('[Normal messaging]', async () => {
@@ -50,17 +52,20 @@ test.describe('[Messaging]', () => {
 				await sideNav.general().click();
 				await mainContent.sendMessage('Hello');
 			});
+
 			test.afterAll(async () => {
-				await anotherContext.mainContent.getPage().close();
+				await anotherContext.page.close();
 			});
+
 			test('expect received message is visible for two context', async () => {
-				const anotherUserMessage = mainContent.getPage().locator('li.message[data-own="false"]').last();
-				const mainUserMessage = anotherContext.mainContent.getPage().locator('li.message[data-own="false"]').last();
+				const anotherUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
+				const mainUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
 
 				await expect(anotherUserMessage).toBeVisible();
 				await expect(mainUserMessage).toBeVisible();
 			});
 		});
+
 		test.describe('[Public channel]', async () => {
 			test.beforeAll(async ({ browser }) => {
 				anotherContext = await createBrowserContextForChat(browser);
@@ -69,12 +74,14 @@ test.describe('[Messaging]', () => {
 				await sideNav.findForChat('public channel');
 				await mainContent.sendMessage('Hello');
 			});
+
 			test.afterAll(async () => {
-				await anotherContext.mainContent.getPage().close();
+				await anotherContext.page.close();
 			});
+
 			test('expect received message is visible for two context', async () => {
-				const anotherUserMessage = mainContent.getPage().locator('li.message[data-own="false"]').last();
-				const mainUserMessage = anotherContext.mainContent.getPage().locator('li.message[data-own="false"]').last();
+				const anotherUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
+				const mainUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
 
 				await expect(anotherUserMessage).toBeVisible();
 				await expect(mainUserMessage).toBeVisible();
@@ -89,12 +96,14 @@ test.describe('[Messaging]', () => {
 				await sideNav.findForChat('private channel');
 				await mainContent.sendMessage('Hello');
 			});
+
 			test.afterAll(async () => {
-				await anotherContext.mainContent.getPage().close();
+				await anotherContext.page.close();
 			});
+
 			test('expect received message is visible for two context', async () => {
-				const anotherUserMessage = mainContent.getPage().locator('li.message[data-own="false"]').last();
-				const mainUserMessage = anotherContext.mainContent.getPage().locator('li.message[data-own="false"]').last();
+				const anotherUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
+				const mainUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
 
 				await expect(anotherUserMessage).toBeVisible();
 				await expect(mainUserMessage).toBeVisible();
@@ -109,12 +118,14 @@ test.describe('[Messaging]', () => {
 				await sideNav.findForChat('user.name.test');
 				await mainContent.sendMessage('Hello');
 			});
+
 			test.afterAll(async () => {
-				await anotherContext.mainContent.getPage().close();
+				await anotherContext.page.close();
 			});
+
 			test('expect received message is visible for two context', async () => {
-				const anotherUserMessage = mainContent.getPage().locator('li.message[data-own="false"]').last();
-				const mainUserMessage = anotherContext.mainContent.getPage().locator('li.message[data-own="false"]').last();
+				const anotherUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
+				const mainUserMessage = anotherContext.page.locator('li.message[data-own="false"]').last();
 
 				await expect(anotherUserMessage).toBeVisible();
 				await expect(mainUserMessage).toBeVisible();
@@ -125,19 +136,24 @@ test.describe('[Messaging]', () => {
 			test.beforeAll(async () => {
 				await sideNav.general().click();
 			});
+
 			test.describe('[Render]', async () => {
 				test.beforeAll(async () => {
 					await mainContent.dragAndDropFile();
 				});
+
 				test('expect modal is visible', async () => {
 					await expect(mainContent.modalTitle()).toHaveText('File Upload');
 				});
+
 				test('expect cancel button is visible', async () => {
 					await expect(mainContent.modalCancelButton()).toBeVisible();
 				});
+
 				test('expect confirm button is visible', async () => {
 					await expect(mainContent.buttonSend()).toBeVisible();
 				});
+
 				test('expect file preview is visible', async () => {
 					await expect(mainContent.modalFilePreview()).toBeVisible();
 				});
@@ -166,6 +182,7 @@ test.describe('[Messaging]', () => {
 					await mainContent.sendFileClick();
 					await expect(mainContent.modalFilePreview()).not.toBeVisible();
 				});
+
 				test('expect send file with description', async () => {
 					await mainContent.setDescription();
 					await mainContent.sendFileClick();
@@ -185,15 +202,17 @@ test.describe('[Messaging]', () => {
 				test.beforeAll(async () => {
 					await sideNav.general().click();
 				});
+
 				test.describe('[Reply]', async () => {
 					test.beforeAll(async () => {
 						await mainContent.sendMessage('This is a message for reply');
 						await mainContent.openMessageActionMenu();
 					});
+
 					test('expect reply the message', async () => {
 						await mainContent.selectAction('reply');
 						await flexTab.messageInput().type('this is a reply message');
-						await flexTab.keyboardPress('Enter');
+						await flexTab.keyPress('Enter');
 						await expect(flexTab.flexTabViewThreadMessage()).toHaveText('this is a reply message');
 						await flexTab.closeThreadMessage().click();
 					});

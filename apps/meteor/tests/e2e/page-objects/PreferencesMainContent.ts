@@ -1,42 +1,42 @@
 import { expect, Locator } from '@playwright/test';
 
-import BasePage from './BasePage';
+import { BasePage } from './BasePage';
 
-class PreferencesMainContent extends BasePage {
+export class PreferencesMainContent extends BasePage {
 	public formTextInput(): Locator {
-		return this.getPage().locator('.rocket-form');
+		return this.page.locator('.rocket-form');
 	}
 
 	public realNameTextInput(): Locator {
-		return this.getPage().locator('//label[contains(text(), "Name")]/..//input');
+		return this.page.locator('//label[contains(text(), "Name")]/..//input');
 	}
 
 	public userNameTextInput(): Locator {
-		return this.getPage().locator('//label[contains(text(), "Username")]/..//input');
+		return this.page.locator('//label[contains(text(), "Username")]/..//input');
 	}
 
 	public emailTextInput(): Locator {
-		return this.getPage().locator('//label[contains(text(), "Email")]/..//input');
+		return this.page.locator('//label[contains(text(), "Email")]/..//input');
 	}
 
 	public passwordTextInput(): Locator {
-		return this.getPage().locator('//label[contains(text(), "Password")]/..//input');
+		return this.page.locator('//label[contains(text(), "Password")]/..//input');
 	}
 
 	public resendVerificationEmailBtn(): Locator {
-		return this.getPage().locator('#resend-verification-email');
+		return this.page.locator('#resend-verification-email');
 	}
 
 	public avatarFileInput(): Locator {
-		return this.getPage().locator('.avatar-file-input');
+		return this.page.locator('.avatar-file-input');
 	}
 
 	public useUploadedAvatar(): Locator {
-		return this.getPage().locator('.avatar-suggestion-item:nth-of-type(2) .select-service');
+		return this.page.locator('.avatar-suggestion-item:nth-of-type(2) .select-service');
 	}
 
 	public submitBtn(): Locator {
-		return this.getPage().locator('[data-qa="AccountProfilePageSaveButton"]');
+		return this.page.locator('[data-qa="AccountProfilePageSaveButton"]');
 	}
 
 	public async changeUsername(userName: string): Promise<void> {
@@ -61,5 +61,3 @@ class PreferencesMainContent extends BasePage {
 		await this.useUploadedAvatar().click();
 	}
 }
-
-export default PreferencesMainContent;

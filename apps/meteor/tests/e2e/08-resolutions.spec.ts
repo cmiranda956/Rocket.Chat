@@ -1,39 +1,33 @@
-import { test, expect, Browser } from '@playwright/test';
+import { test, expect, Browser, Page } from '@playwright/test';
 
-import MainContent from './utils/pageobjects/MainContent';
-import SideNav from './utils/pageobjects/SideNav';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
-import { PageLogin } from './page-objects';
+import { Login, MainContent, SideNav } from './page-objects';
 
-let pageLogin: PageLogin;
+let page: Page;
+let login: Login;
 let mainContent: MainContent;
 let sideNav: SideNav;
 
-async function initConfig(
-	browser: Browser,
-	baseURL: string | undefined,
-	options = { viewport: { width: 650, height: 800 } },
-): Promise<any> {
+async function initConfig(browser: Browser, options = { viewport: { width: 650, height: 800 } }): Promise<any> {
 	const context = await browser.newContext(options);
-	const page = await context.newPage();
-	const URL = baseURL as string;
-	pageLogin = new PageLogin(page);
-	await page.goto(URL);
+	page = await context.newPage();
+	login = new Login(page);
+	await page.goto('/');
 
-	await pageLogin.doLogin(adminLogin);
+	await login.doLogin(adminLogin);
 	sideNav = new SideNav(page);
 	mainContent = new MainContent(page);
-	return { pageLogin, sideNav, mainContent };
+	return { login, sideNav, mainContent };
 }
 
 test.describe('[Resolution]', function () {
 	test.describe('[Mobile Render]', async () => {
-		test.beforeAll(async ({ browser, baseURL }) => {
-			await initConfig(browser, baseURL);
+		test.beforeAll(async ({ browser }) => {
+			await initConfig(browser);
 		});
 
-		test.afterAll(async ({ browser, baseURL }) => {
-			await initConfig(browser, baseURL, { viewport: { width: 1600, height: 1600 } });
+		test.afterAll(async ({ browser }) => {
+			await initConfig(browser, { viewport: { width: 1600, height: 1600 } });
 
 			await expect(sideNav.spotlightSearchIcon()).toBeVisible();
 		});
@@ -89,19 +83,19 @@ test.describe('[Resolution]', function () {
 
 				test('expect close the sidenav when press the preferences link', async () => {
 					await sideNav.preferences().click();
-					await sideNav.getPage().mouse.click(640, 30);
+					await page.mouse.click(640, 30);
 					await expect(await sideNav.isSideBarOpen()).toBeTruthy;
 				});
 
 				test('expect close the sidenav when press the profile link', async () => {
 					await sideNav.profile().click();
-					await sideNav.getPage().mouse.click(640, 30);
+					await page.mouse.click(640, 30);
 					await expect(await sideNav.isSideBarOpen()).toBeTruthy;
 				});
 
 				test('expect close the preferences nav', async () => {
 					await sideNav.preferencesClose().click();
-					await sideNav.getPage().mouse.click(640, 30);
+					await page.mouse.click(640, 30);
 					await expect(await sideNav.isSideBarOpen()).toBeFalsy;
 				});
 			});

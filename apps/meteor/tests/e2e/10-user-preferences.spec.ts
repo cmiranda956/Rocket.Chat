@@ -1,13 +1,9 @@
 import { test, expect, Page } from '@playwright/test';
 import faker from '@faker-js/faker';
 
-import MainContent from './utils/pageobjects/MainContent';
-import SideNav from './utils/pageobjects/SideNav';
-import FlexTab from './utils/pageobjects/FlexTab';
-import PreferencesMainContent from './utils/pageobjects/PreferencesMainContent';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
 import { clearMessages } from './utils/helpers/clearMessages';
-import { PageLogin } from './page-objects';
+import { Login, MainContent, SideNav, FlexTab, PreferencesMainContent } from './page-objects';
 
 test.describe('[User Preferences]', () => {
 	test.beforeAll(async () => {
@@ -16,7 +12,7 @@ test.describe('[User Preferences]', () => {
 
 	test.describe('default', () => {
 		let page: Page;
-		let pageLogin: PageLogin;
+		let login: Login;
 		let flexTab: FlexTab;
 		let mainContent: MainContent;
 		let sideNav: SideNav;
@@ -26,14 +22,14 @@ test.describe('[User Preferences]', () => {
 			const context = await browser.newContext();
 
 			page = await context.newPage();
-			pageLogin = new PageLogin(page);
+			login = new Login(page);
 			sideNav = new SideNav(page);
 			mainContent = new MainContent(page);
 			preferencesMainContent = new PreferencesMainContent(page);
 			flexTab = new FlexTab(page);
 
 			await page.goto('/');
-			await pageLogin.doLogin(adminLogin);
+			await login.doLogin(adminLogin);
 
 			await sideNav.sidebarUserMenu().click();
 			await sideNav.account().click();

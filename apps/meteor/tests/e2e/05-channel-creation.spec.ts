@@ -1,23 +1,22 @@
 import { test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
-import ChannelCreation from './utils/pageobjects/ChannelCreation';
 import { validUserInserted, ROCKET_CAT } from './utils/mocks/userAndPasswordMock';
-import { PageLogin } from './page-objects';
+import { Login, ChannelCreation } from './page-objects';
 
 test.describe('[Channel]', async () => {
 	let channelCreation: ChannelCreation;
-	let pageLogin: PageLogin;
+	let login: Login;
 
 	const HELLO = 'Hello';
 
 	test.beforeEach(async ({ page, baseURL }) => {
 		const baseUrl = baseURL as string;
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 		channelCreation = new ChannelCreation(page);
 
 		await page.goto(baseUrl);
-		await pageLogin.doLogin(validUserInserted);
+		await login.doLogin(validUserInserted);
 	});
 
 	test.describe('[Public and private channel creation]', () => {

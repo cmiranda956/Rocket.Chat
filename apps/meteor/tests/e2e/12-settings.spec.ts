@@ -3,17 +3,13 @@ import { v4 as uuid } from 'uuid';
 
 import { BASE_API_URL } from './utils/mocks/urlMock';
 import { adminLogin, validUserInserted, registerUser } from './utils/mocks/userAndPasswordMock';
-import MainContent from './utils/pageobjects/MainContent';
-import SideNav from './utils/pageobjects/SideNav';
-import Administration from './utils/pageobjects/Administration';
-import PreferencesMainContent from './utils/pageobjects/PreferencesMainContent';
-import { PageLogin } from './page-objects';
+import { Login, MainContent, SideNav, Administration, PreferencesMainContent } from './page-objects';
 
 const apiSessionHeaders = { 'X-Auth-Token': '', 'X-User-Id': '' };
 
 test.describe.skip('[Settings]', async () => {
 	let page: Page;
-	let pageLogin: PageLogin;
+	let login: Login;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let userPreferences: PreferencesMainContent;
@@ -22,13 +18,13 @@ test.describe.skip('[Settings]', async () => {
 		const context = await browser.newContext();
 		page = await context.newPage();
 
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 		mainContent = new MainContent(page);
 		sideNav = new SideNav(page);
 		userPreferences = new PreferencesMainContent(page);
 
 		await page.goto('/');
-		await pageLogin.doLogin(validUserInserted);
+		await login.doLogin(validUserInserted);
 		await sideNav.general().click();
 	});
 
@@ -396,7 +392,7 @@ test.describe.skip('[Settings]', async () => {
 
 test.describe.skip('[Settings (admin)]', async () => {
 	let page: Page;
-	let pageLogin: PageLogin;
+	let login: Login;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let admin: Administration;
@@ -404,14 +400,14 @@ test.describe.skip('[Settings (admin)]', async () => {
 	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
 		page = await context.newPage();
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 
 		mainContent = new MainContent(page);
 		sideNav = new SideNav(page);
 		admin = new Administration(page);
 
 		await page.goto('/');
-		await pageLogin.doLogin(adminLogin);
+		await login.doLogin(adminLogin);
 		await sideNav.general().click();
 	});
 
@@ -477,7 +473,7 @@ test.describe.skip('[Settings (admin)]', async () => {
 
 		test.describe('(UI) expect activate/deactivate flow as admin', () => {
 			test('expect open /users as admin', async () => {
-				await admin.goto('/admin');
+				await page.goto('/admin');
 				await admin.usersLink().click();
 			});
 
@@ -488,12 +484,12 @@ test.describe.skip('[Settings (admin)]', async () => {
 
 			test('expect activate registered user', async () => {
 				await admin.userInfoActions().locator('button:nth-child(3)').click();
-				await admin.getPage().locator('[value="changeActiveStatus"]').click();
+				await page.locator('[value="changeActiveStatus"]').click();
 			});
 
 			test('expect deactivate registered user', async () => {
 				await admin.userInfoActions().locator('button:nth-child(3)').click();
-				await admin.getPage().locator('[value="changeActiveStatus"]').click();
+				await page.locator('[value="changeActiveStatus"]').click();
 			});
 		});
 

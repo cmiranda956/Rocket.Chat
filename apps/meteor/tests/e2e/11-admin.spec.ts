@@ -1,16 +1,13 @@
 import { test, expect, Page } from '@playwright/test';
 
-import SideNav from './utils/pageobjects/SideNav';
 import { adminLogin, ROCKET_CAT } from './utils/mocks/userAndPasswordMock';
-import Administration from './utils/pageobjects/Administration';
-import FlexTab from './utils/pageobjects/FlexTab';
 import { ROCKET_CAT_SELECTOR } from './utils/mocks/waitSelectorsMock';
 import { Checkbox } from './utils/enums/Checkbox';
-import { PageLogin } from './page-objects';
+import { Login, SideNav, Administration, FlexTab } from './page-objects';
 
 test.describe('[Administration]', () => {
 	let page: Page;
-	let pageLogin: PageLogin;
+	let login: Login;
 	let sideNav: SideNav;
 	let admin: Administration;
 	let flexTab: FlexTab;
@@ -20,13 +17,13 @@ test.describe('[Administration]', () => {
 		const context = await browser.newContext();
 
 		page = await context.newPage();
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 		sideNav = new SideNav(page);
 		flexTab = new FlexTab(page);
 		admin = new Administration(page);
 
 		await page.goto(baseURL as string);
-		await pageLogin.doLogin(adminLogin);
+		await login.doLogin(adminLogin);
 	});
 
 	test.describe('[Admin View]', () => {

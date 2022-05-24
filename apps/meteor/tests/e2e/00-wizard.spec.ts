@@ -1,24 +1,27 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-import SetupWizard from './utils/pageobjects/SetupWizard';
 import { VALID_EMAIL, adminLogin } from './utils/mocks/userAndPasswordMock';
 import { setupWizardStepRegex } from './utils/mocks/urlMock';
 import { HOME_SELECTOR } from './utils/mocks/waitSelectorsMock';
-import { PageLogin } from './page-objects';
+import { Login, SetupWizard } from './page-objects';
 
 test.describe('[Wizard]', () => {
 	let setupWizard: SetupWizard;
-	let pageLogin: PageLogin;
+	let login: Login;
+	let page: Page;
 
-	test.beforeEach(async ({ page }) => {
+	test.beforeEach(async ({ browser }) => {
+		const context = await browser.newContext();
+
+		page = await context.newPage();
 		setupWizard = new SetupWizard(page);
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 	});
 
 	test.describe('[Step 2]', async () => {
 		test.beforeEach(async () => {
-			await setupWizard.goto('/');
-			await pageLogin.doLogin(adminLogin);
+			await page.goto('/');
+			await login.doLogin(adminLogin);
 		});
 
 		test('expect required field alert showed when user dont inform data', async () => {
@@ -27,14 +30,14 @@ test.describe('[Wizard]', () => {
 
 		test('expect go to Step 3 successfully', async () => {
 			await setupWizard.stepTwoSuccess();
-			await expect(setupWizard.getPage()).toHaveURL(setupWizardStepRegex._3);
+			await expect(page).toHaveURL(setupWizardStepRegex._3);
 		});
 	});
 
 	test.describe('[Step 3]', async () => {
 		test.beforeEach(async () => {
-			await setupWizard.goto('');
-			await pageLogin.doLogin(adminLogin);
+			await page.goto('');
+			await login.doLogin(adminLogin);
 			await setupWizard.stepTwoSuccess();
 		});
 
@@ -63,8 +66,8 @@ test.describe('[Wizard]', () => {
 
 	test.describe('[Final Step]', async () => {
 		test.beforeEach(async () => {
-			await setupWizard.goto('');
-			await pageLogin.doLogin(adminLogin);
+			await page.goto('');
+			await login.doLogin(adminLogin);
 			await setupWizard.stepTwoSuccess();
 			await setupWizard.stepThreeSuccess();
 		});
@@ -76,7 +79,7 @@ test.describe('[Wizard]', () => {
 
 		test('expect confirm standalone', async () => {
 			await setupWizard.goToWorkspace().click();
-			await setupWizard.waitForSelector(HOME_SELECTOR);
+			await page.waitForSelector(HOME_SELECTOR);
 		});
 	});
 });

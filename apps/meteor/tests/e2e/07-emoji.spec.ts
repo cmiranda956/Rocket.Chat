@@ -1,25 +1,24 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-import MainContent from './utils/pageobjects/MainContent';
-import SideNav from './utils/pageobjects/SideNav';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
-import { PageLogin } from './page-objects';
+import { Login, MainContent, SideNav } from './page-objects';
 
 test.describe('[Emoji]', function () {
-	let pageLogin: PageLogin;
+	let page: Page;
+	let login: Login;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 
 	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
-		const page = await context.newPage();
 
-		pageLogin = new PageLogin(page);
+		page = await context.newPage();
+		login = new Login(page);
 		sideNav = new SideNav(page);
 		mainContent = new MainContent(page);
 
 		await page.goto('/');
-		await pageLogin.doLogin(adminLogin);
+		await login.doLogin(adminLogin);
 		await sideNav.openChannel('general');
 	});
 
@@ -103,7 +102,7 @@ test.describe('[Emoji]', function () {
 
 			test('expect send the emoji', async () => {
 				await mainContent.addTextToInput(' ');
-				await mainContent.getPage().keyboard.press('Enter');
+				await mainContent.keyPress('Enter');
 			});
 
 			test('expect be that the value on the message is the same as the emoji clicked', async () => {

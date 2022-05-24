@@ -1,51 +1,51 @@
 import { Locator, expect } from '@playwright/test';
 
-import BasePage from './BasePage';
-import { ENTER } from '../mocks/keyboardKeyMock';
+import { BasePage } from './BasePage';
+import { ENTER } from '../utils/mocks/keyboardKeyMock';
 
-export default class ChannelCreation extends BasePage {
+export class ChannelCreation extends BasePage {
 	private buttonCreate(): Locator {
-		return this.getPage().locator('[data-qa="sidebar-create"]');
+		return this.page.locator('[data-qa="sidebar-create"]');
 	}
 
 	private inputChannelName(): Locator {
-		return this.getPage().locator('[placeholder="Channel Name"]');
+		return this.page.locator('[placeholder="Channel Name"]');
 	}
 
 	private inputChannelDescription(): Locator {
-		return this.getPage().locator('[placeholder="What is this channel about?"]');
+		return this.page.locator('[placeholder="What is this channel about?"]');
 	}
 
 	private buttonCreateChannel(): Locator {
-		return this.getPage().locator('//ul[@class="rc-popover__list"]//li[@class="rcx-option"][1]');
+		return this.page.locator('//ul[@class="rc-popover__list"]//li[@class="rcx-option"][1]');
 	}
 
 	private channelName(): Locator {
-		return this.getPage().locator('//header//div//div//div//div[2]');
+		return this.page.locator('//header//div//div//div//div[2]');
 	}
 
 	private buttonConfirmCreation(): Locator {
-		return this.getPage().locator('//button[contains(text(), "Create" )]');
+		return this.page.locator('//button[contains(text(), "Create" )]');
 	}
 
 	private privateChannel(): Locator {
-		return this.getPage().locator('//label[contains(text(),"Private")]/../following-sibling::label/i');
+		return this.page.locator('//label[contains(text(),"Private")]/../following-sibling::label/i');
 	}
 
 	private searchChannel(): Locator {
-		return this.getPage().locator('[data-qa="sidebar-search"]');
+		return this.page.locator('[data-qa="sidebar-search"]');
 	}
 
 	private searchChannelInput(): Locator {
-		return this.getPage().locator('[data-qa="sidebar-search-input"]');
+		return this.page.locator('[data-qa="sidebar-search-input"]');
 	}
 
 	private textArea(): Locator {
-		return this.getPage().locator('.rc-message-box__textarea');
+		return this.page.locator('.rc-message-box__textarea');
 	}
 
 	private lastMessage(): Locator {
-		return this.getPage().locator('.message:last-child .body');
+		return this.page.locator('.message:last-child .body');
 	}
 
 	public async createChannel(name: string, isPrivate: boolean): Promise<void> {
@@ -64,10 +64,10 @@ export default class ChannelCreation extends BasePage {
 	public async sendMessage(targetUser: string, message: string): Promise<void> {
 		await this.searchChannel().click();
 		await this.searchChannelInput().type(targetUser, { delay: 200 });
-		await this.keyboardPress(ENTER);
+		await this.keyPress(ENTER);
 
 		await this.textArea().type(message);
-		await this.keyboardPress(ENTER);
+		await this.keyPress(ENTER);
 
 		await expect(this.lastMessage()).toBeVisible();
 		await expect(this.lastMessage()).toHaveText(message);

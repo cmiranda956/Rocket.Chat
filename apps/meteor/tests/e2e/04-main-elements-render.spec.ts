@@ -1,28 +1,26 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-import MainContent from './utils/pageobjects/MainContent';
-import SideNav from './utils/pageobjects/SideNav';
-import FlexTab from './utils/pageobjects/FlexTab';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
-import { PageLogin } from './page-objects';
+import { Login, MainContent, SideNav, FlexTab } from './page-objects';
 
 test.describe('[Main Elements Render]', function () {
-	let pageLogin: PageLogin;
+	let page: Page;
+	let login: Login;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
 	let flexTab: FlexTab;
 
 	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
-		const page = await context.newPage();
 
-		pageLogin = new PageLogin(page);
+		page = await context.newPage();
+		login = new Login(page);
 		sideNav = new SideNav(page);
 		mainContent = new MainContent(page);
 		flexTab = new FlexTab(page);
 
 		await page.goto('/');
-		await pageLogin.doLogin(adminLogin);
+		await login.doLogin(adminLogin);
 	});
 
 	test.describe('[Side Nav Bar]', () => {
@@ -50,7 +48,7 @@ test.describe('[Main Elements Render]', function () {
 			test('expect add text to the spotlight and show the channel list', async () => {
 				await sideNav.spotlightSearch().type('rocket.cat');
 				await expect(sideNav.spotlightSearchPopUp()).toBeVisible();
-				await sideNav.getPage().locator('//*[@data-qa="sidebar-search-result"]//*[@data-index="0"]').click();
+				await page.locator('//*[@data-qa="sidebar-search-result"]//*[@data-index="0"]').click();
 			});
 		});
 	});

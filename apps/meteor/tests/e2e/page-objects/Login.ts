@@ -3,7 +3,7 @@ import { Locator } from '@playwright/test';
 import { ILogin, IRegister } from '../utils/interfaces/Login';
 import { BasePage } from './BasePage';
 
-export class PageLogin extends BasePage {
+export class Login extends BasePage {
 	get btnRegister(): Locator {
 		return this.page.locator('button.register');
 	}
@@ -70,14 +70,14 @@ export class PageLogin extends BasePage {
 		await this.btnFormSubmit.click();
 	}
 
-	async doRegister(input: IRegister, shouldHandleNexScreen = true): Promise<void> {
+	async doRegister(input: IRegister, shouldHandleNextScreen = true): Promise<void> {
 		await this.inputName.type(input.name);
 		await this.inputEmail.type(input.email);
 		await this.inputPassword.type(input.password);
 		await this.inputPasswordConfirm.type(input.passwordConfirm ?? input.password);
 		await this.btnFormSubmit.click();
 
-		if (shouldHandleNexScreen) {
+		if (shouldHandleNextScreen) {
 			await this.page.waitForSelector('//button[contains(text(), "Use this username")]');
 			await this.btnRegisterNext.click();
 			await this.page.waitForSelector('//span[@class="rc-header__block"]');

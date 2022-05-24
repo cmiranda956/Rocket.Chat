@@ -2,17 +2,17 @@ import { test, expect, Page } from '@playwright/test';
 
 import { validUser } from './utils/mocks/userAndPasswordMock';
 import { HOME_SELECTOR } from './utils/mocks/waitSelectorsMock';
-import { PageLogin } from './page-objects';
+import { Login } from './page-objects';
 
 test.describe('[Login]', () => {
 	let page: Page;
-	let pageLogin: PageLogin;
+	let login: Login;
 
 	test.beforeEach(async ({ browser }) => {
 		const context = await browser.newContext();
 
 		page = await context.newPage();
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 
 		await page.goto('/');
 	});
@@ -23,12 +23,12 @@ test.describe('[Login]', () => {
 			password: 'any_password1',
 		};
 
-		await pageLogin.doLogin(invalidUserPassword);
-		await expect(pageLogin.boxToast).toBeVisible();
+		await login.doLogin(invalidUserPassword);
+		await expect(login.boxToast).toBeVisible();
 	});
 
 	test('expect user make login', async () => {
-		await pageLogin.doLogin(validUser);
+		await login.doLogin(validUser);
 		await page.waitForSelector(HOME_SELECTOR);
 	});
 });

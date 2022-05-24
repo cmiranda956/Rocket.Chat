@@ -1,14 +1,13 @@
 import { Page, test, expect } from '@playwright/test';
 import { v4 as uuid } from 'uuid';
 
-import { FlexTab, Administration, MainContent, SideNav } from './utils/pageobjects';
+import { Login, FlexTab, Administration, MainContent, SideNav } from './page-objects';
 import { adminLogin, createRegisterUser } from './utils/mocks/userAndPasswordMock';
 import { BACKSPACE } from './utils/mocks/keyboardKeyMock';
-import { PageLogin } from './page-objects';
 
 test.describe('[Permissions]', () => {
 	let page: Page;
-	let pageLogin: PageLogin;
+	let login: Login;
 
 	let admin: Administration;
 	let flexTab: FlexTab;
@@ -21,7 +20,7 @@ test.describe('[Permissions]', () => {
 		const context = await browser.newContext();
 
 		page = await context.newPage();
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 
 		admin = new Administration(page);
 		flexTab = new FlexTab(page);
@@ -29,7 +28,7 @@ test.describe('[Permissions]', () => {
 		mainContent = new MainContent(page);
 
 		await page.goto('/');
-		await pageLogin.doLogin(adminLogin);
+		await login.doLogin(adminLogin);
 		await sideNav.general().click();
 		await page.goto('/admin/users');
 	});
@@ -78,7 +77,7 @@ test.describe('[Permissions]', () => {
 		test.beforeAll(async () => {
 			await sideNav.doLogout();
 			await page.goto('/');
-			await pageLogin.doLogin(userToBeCreated);
+			await login.doLogin(userToBeCreated);
 			await sideNav.general().click();
 		});
 

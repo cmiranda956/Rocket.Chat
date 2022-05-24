@@ -1,37 +1,31 @@
 import { test, expect, Page } from '@playwright/test';
 
-import FlexTab from './utils/pageobjects/FlexTab';
-import MainContent from './utils/pageobjects/MainContent';
-import SideNav from './utils/pageobjects/SideNav';
-import Global from './utils/pageobjects/Global';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
 import { publicChannelCreated, setPublicChannelCreated } from './utils/mocks/checks';
 import { publicChannelName } from './utils/mocks/channel';
 import { targetUser } from './utils/mocks/interations';
-import { PageLogin } from './page-objects';
+import { Login, FlexTab, MainContent, SideNav } from './page-objects';
 
 let hasUserAddedInChannel = false;
 
 test.describe('[Channel]', () => {
 	let page: Page;
-	let pageLogin: PageLogin;
+	let login: Login;
 	let flexTab: FlexTab;
 	let mainContent: MainContent;
 	let sideNav: SideNav;
-	let global: Global;
 
 	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
 
 		page = await context.newPage();
-		pageLogin = new PageLogin(page);
+		login = new Login(page);
 		sideNav = new SideNav(page);
 		mainContent = new MainContent(page);
 		flexTab = new FlexTab(page);
-		global = new Global(page);
 
 		await page.goto('/');
-		await pageLogin.doLogin(adminLogin);
+		await login.doLogin(adminLogin);
 
 		if (!publicChannelCreated) {
 			await sideNav.createChannel(publicChannelName, false);
@@ -104,15 +98,16 @@ test.describe('[Channel]', () => {
 
 		test.describe('Adding a user to the room:', async () => {
 			test.beforeAll(async () => {
-				if (await global.toastAlert().isVisible()) {
-					await global.dismissToast();
+				if (await flexTab.boxToastSuccess.isVisible()) {
+					await flexTab.boxToastSuccess.click();
 				}
+
 				await flexTab.operateFlexTab('members', true);
 			});
 
 			test.afterAll(async () => {
-				if (await global.toastAlert().isVisible()) {
-					await global.dismissToast();
+				if (await flexTab.boxToastSuccess.isVisible()) {
+					await flexTab.boxToastSuccess.click();
 				}
 				await flexTab.operateFlexTab('members', false);
 			});
@@ -120,7 +115,7 @@ test.describe('[Channel]', () => {
 			test('expect add people to the room', async () => {
 				await flexTab.addPeopleToChannel(targetUser);
 				hasUserAddedInChannel = true;
-				await expect(global.toastAlert()).toBeVisible();
+				expect(await flexTab.boxToastSuccess.isVisible()).toBeTruthy();
 			});
 		});
 
@@ -132,9 +127,10 @@ test.describe('[Channel]', () => {
 				});
 
 				test.afterAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
+
 					if (await flexTab.mainSideBar().isVisible()) {
 						await flexTab.mainSideBarClose().click();
 					}
@@ -160,9 +156,10 @@ test.describe('[Channel]', () => {
 				});
 
 				test.afterAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
+
 					if (await flexTab.mainSideBar().isVisible()) {
 						await flexTab.mainSideBarClose().click();
 					}
@@ -188,9 +185,10 @@ test.describe('[Channel]', () => {
 				});
 
 				test.afterAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
+
 					if (await flexTab.mainSideBar().isVisible()) {
 						await flexTab.mainSideBarClose().click();
 					}
@@ -223,9 +221,10 @@ test.describe('[Channel]', () => {
 				});
 
 				test.afterAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
+
 					await flexTab.operateFlexTab('members', false);
 				});
 
@@ -245,9 +244,10 @@ test.describe('[Channel]', () => {
 				});
 
 				test.afterAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
+
 					await flexTab.operateFlexTab('members', false);
 				});
 
@@ -256,8 +256,8 @@ test.describe('[Channel]', () => {
 				});
 
 				test('expect dismiss the toast', async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
 				});
 
@@ -281,9 +281,10 @@ test.describe('[Channel]', () => {
 				});
 
 				test.afterAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
+
 					await flexTab.operateFlexTab('members', false);
 				});
 
@@ -298,15 +299,16 @@ test.describe('[Channel]', () => {
 
 			test.describe('Channel name edit', async () => {
 				test.beforeAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
+
 					await flexTab.operateFlexTab('info', true);
 				});
 
 				test.afterAll(async () => {
-					if (await global.toastAlert().isVisible()) {
-						await global.dismissToast();
+					if (await flexTab.boxToastSuccess.isVisible()) {
+						await flexTab.boxToastSuccess.click();
 					}
 
 					if (await flexTab.mainSideBar().isVisible()) {
