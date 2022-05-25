@@ -19,7 +19,7 @@ Or all the tests with
 $ yarn test:playwright
 ```
 
-We also can pass `PW_DEBUG=1` to controll the test execution
+We also can pass `PWDEBUG=1` to controll the test execution
 
 ## Current limitations
 - 00-wizard.spec.ts will only pass if the database is empty
