@@ -1,4 +1,4 @@
-import { Page, test } from '@playwright/test';
+import { Page, test, expect } from '@playwright/test';
 
 import { registerUser, WRONG_PASSWORD } from './utils/mocks/userAndPasswordMock';
 import { Login } from './page-objects';

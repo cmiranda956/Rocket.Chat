@@ -13,7 +13,7 @@ test.describe('[Administration]', () => {
 	let flexTab: FlexTab;
 	const checkBoxesSelectors = ['Direct', 'Public', 'Private', 'Omnichannel', 'Discussions', 'Teams'];
 
-	test.beforeAll(async ({ browser, baseURL }) => {
+	test.beforeAll(async ({ browser }) => {
 		const context = await browser.newContext();
 
 		page = await context.newPage();
@@ -22,7 +22,7 @@ test.describe('[Administration]', () => {
 		flexTab = new FlexTab(page);
 		admin = new Administration(page);
 
-		await page.goto(baseURL as string);
+		await page.goto('/');
 		await login.doLogin(adminLogin);
 	});
 
@@ -65,7 +65,7 @@ test.describe('[Administration]', () => {
 
 				test.afterAll(async () => {
 					await admin.roomsSearchForm().click({ clickCount: 3 });
-					await admin.keyboardPress('Backspace');
+					await admin.keyPress('Backspace');
 				});
 
 				test('expect show the general channel', async () => {
@@ -81,7 +81,7 @@ test.describe('[Administration]', () => {
 			test.describe('[Filter checkbox]', () => {
 				test.beforeAll(async () => {
 					await admin.roomsSearchForm().click({ clickCount: 3 });
-					await admin.keyboardPress('Backspace');
+					await admin.keyPress('Backspace');
 				});
 
 				test('expect not show the general channel with direct', async () => {
@@ -145,7 +145,7 @@ test.describe('[Administration]', () => {
 
 					test('expect should show rocket.cat', async () => {
 						await admin.usersFilter().type(ROCKET_CAT);
-						await admin.waitForSelector(ROCKET_CAT_SELECTOR);
+						await page.waitForSelector(ROCKET_CAT_SELECTOR);
 					});
 					test('expect dont user when write wrong name', async () => {
 						await admin.usersFilter().type('any_user_wrong');

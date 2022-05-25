@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 
-import { validUser } from './utils/mocks/userAndPasswordMock';
+import { validUser, WRONG_PASSWORD } from './utils/mocks/userAndPasswordMock';
 import { HOME_SELECTOR } from './utils/mocks/waitSelectorsMock';
 import { Login } from './page-objects';
 
@@ -20,7 +20,7 @@ test.describe('[Login]', () => {
 	test('expect user write a password incorrectly', async () => {
 		const invalidUserPassword = {
 			email: validUser.email,
-			password: 'any_password1',
+			password: WRONG_PASSWORD,
 		};
 
 		await login.doLogin(invalidUserPassword);

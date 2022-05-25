@@ -20,7 +20,7 @@ async function initConfig(browser: Browser, options = { viewport: { width: 650, 
 	return { login, sideNav, mainContent };
 }
 
-test.describe('[Resolution]', function () {
+test.describe('[Resolution]', () => {
 	test.describe('[Mobile Render]', async () => {
 		test.beforeAll(async ({ browser }) => {
 			await initConfig(browser);

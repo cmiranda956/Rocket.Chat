@@ -3,7 +3,7 @@ import { test, expect, Page } from '@playwright/test';
 import { adminLogin } from './utils/mocks/userAndPasswordMock';
 import { Login, MainContent, SideNav, FlexTab } from './page-objects';
 
-test.describe('[Main Elements Render]', function () {
+test.describe('[Main Elements Render]', () => {
 	let page: Page;
 	let login: Login;
 	let mainContent: MainContent;
