@@ -7,7 +7,7 @@ import { Login, MainContent, SideNav, Administration, PreferencesMainContent } f
 
 const apiSessionHeaders = { 'X-Auth-Token': '', 'X-User-Id': '' };
 
-test.describe.skip('[Settings]', async () => {
+test.describe.skip('Settings', async () => {
 	let page: Page;
 	let login: Login;
 	let mainContent: MainContent;
@@ -56,9 +56,9 @@ test.describe.skip('[Settings]', async () => {
 		test('(UI) expect option(edit) not be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="edit-message"]')).toBeFalsy();
+			expect(await page.isVisible('data-qa-id="edit-message"')).toBeFalsy();
 		});
 
 		test('(API) expect enable message editing', async ({ request }) => {
@@ -75,9 +75,9 @@ test.describe.skip('[Settings]', async () => {
 		test('(UI) expect option(edit) be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="edit-message"]')).toBeTruthy();
+			expect(await page.isVisible('data-qa-id="edit-message"')).toBeTruthy();
 		});
 	});
 
@@ -96,9 +96,9 @@ test.describe.skip('[Settings]', async () => {
 		test('(UI) expect option(delete) not be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="delete-message"]')).toBeFalsy();
+			expect(await page.isVisible('data-qa-id="delete-message"')).toBeFalsy();
 		});
 
 		test('(API) expect enable message deleting', async ({ request }) => {
@@ -115,9 +115,9 @@ test.describe.skip('[Settings]', async () => {
 		test('(UI) expect option(delete) be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="delete-message"]')).toBeTruthy();
+			expect(await page.isVisible('data-qa-id="delete-message"')).toBeTruthy();
 		});
 	});
 
@@ -171,9 +171,9 @@ test.describe.skip('[Settings]', async () => {
 
 		test('(UI) expect option(upload video) not be visible', async () => {
 			await mainContent.doReload();
-			await mainContent.openMoreActionMenu();
+			await mainContent.doOpenMoreActionMenu();
 
-			expect(await page.isVisible('.rc-popover__content [data-id="video-message"]')).toBeFalsy();
+			expect(await page.isVisible('.rc-popover__content [data-id="video-message"')).toBeFalsy();
 		});
 
 		test('(API) expect enable video files', async ({ request }) => {
@@ -189,9 +189,9 @@ test.describe.skip('[Settings]', async () => {
 
 		test('(UI) expect option(upload video) be visible', async () => {
 			await mainContent.doReload();
-			await mainContent.openMoreActionMenu();
+			await mainContent.doOpenMoreActionMenu();
 
-			expect(await page.isVisible('.rc-popover__content [data-id="video-message"]')).toBeTruthy();
+			expect(await page.isVisible('.rc-popover__content [data-id="video-message"')).toBeTruthy();
 		});
 	});
 
@@ -261,9 +261,9 @@ test.describe.skip('[Settings]', async () => {
 		test.skip('(UI) expect option(star message) not be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="star-message"]')).toBeFalsy();
+			expect(await page.isVisible('data-qa-id="star-message"')).toBeFalsy();
 		});
 
 		test('(API) expect enable message starring', async ({ request }) => {
@@ -280,9 +280,9 @@ test.describe.skip('[Settings]', async () => {
 		test('(UI) expect option(star message) be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="star-message"]')).toBeTruthy();
+			expect(await page.isVisible('data-qa-id="star-message"')).toBeTruthy();
 		});
 	});
 
@@ -300,9 +300,9 @@ test.describe.skip('[Settings]', async () => {
 
 		test('(UI) expect option(upload file) not be visible', async () => {
 			await mainContent.doReload();
-			await mainContent.openMoreActionMenu();
+			await mainContent.doOpenMoreActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="file-upload"]')).toBeFalsy();
+			expect(await page.isVisible('data-qa-id="file-upload"')).toBeFalsy();
 		});
 
 		test('(API) expect enable file upload', async ({ request }) => {
@@ -318,9 +318,9 @@ test.describe.skip('[Settings]', async () => {
 
 		test('(UI) expect option(upload file) be visible', async () => {
 			await mainContent.doReload();
-			await mainContent.openMoreActionMenu();
+			await mainContent.doOpenMoreActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="file-upload"]')).toBeTruthy();
+			expect(await page.isVisible('data-qa-id="file-upload"')).toBeTruthy();
 		});
 	});
 
@@ -390,7 +390,7 @@ test.describe.skip('[Settings]', async () => {
 	});
 });
 
-test.describe.skip('[Settings (admin)]', async () => {
+test.describe.skip('Settings (admin)', async () => {
 	let page: Page;
 	let login: Login;
 	let mainContent: MainContent;
@@ -434,9 +434,9 @@ test.describe.skip('[Settings (admin)]', async () => {
 		test('(UI) expect option(pin message) not be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="pin-message"]')).toBeFalsy();
+			expect(await page.isVisible('data-qa-id="pin-message"')).toBeFalsy();
 		});
 
 		test('(API) expect enable message pinning', async ({ request }) => {
@@ -453,9 +453,9 @@ test.describe.skip('[Settings (admin)]', async () => {
 		test('(UI) expect option(pin message) be visible', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="pin-message"]')).toBeTruthy();
+			expect(await page.isVisible('data-qa-id="pin-message"')).toBeTruthy();
 		});
 	});
 
@@ -474,22 +474,22 @@ test.describe.skip('[Settings (admin)]', async () => {
 		test.describe('(UI) expect activate/deactivate flow as admin', () => {
 			test('expect open /users as admin', async () => {
 				await page.goto('/admin');
-				await admin.usersLink().click();
+				await admin.linkUsers.click();
 			});
 
 			test('expect find registered user', async () => {
-				await admin.usersFilter().type(registerUser.email, { delay: 200 });
-				await admin.userInTable(registerUser.email).click();
+				await admin.inputSearchUsers.type(registerUser.email, { delay: 200 });
+				await admin.getUserInTable(registerUser.email).click();
 			});
 
 			test('expect activate registered user', async () => {
-				await admin.userInfoActions().locator('button:nth-child(3)').click();
-				await page.locator('[value="changeActiveStatus"]').click();
+				await admin.userInfoActions.locator('button:nth-child(3)').click();
+				await page.locator('value="changeActiveStatus"').click();
 			});
 
 			test('expect deactivate registered user', async () => {
-				await admin.userInfoActions().locator('button:nth-child(3)').click();
-				await page.locator('[value="changeActiveStatus"]').click();
+				await admin.userInfoActions.locator('button:nth-child(3)').click();
+				await page.locator('value="changeActiveStatus"').click();
 			});
 		});
 

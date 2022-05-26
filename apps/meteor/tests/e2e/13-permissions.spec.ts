@@ -5,10 +5,9 @@ import { Login, FlexTab, Administration, MainContent, SideNav } from './page-obj
 import { adminLogin, createRegisterUser } from './utils/mocks/userAndPasswordMock';
 import { BACKSPACE } from './utils/mocks/keyboardKeyMock';
 
-test.describe('[Permissions]', () => {
+test.describe('Permissions', () => {
 	let page: Page;
 	let login: Login;
-
 	let admin: Administration;
 	let flexTab: FlexTab;
 	let sideNav: SideNav;
@@ -45,17 +44,17 @@ test.describe('[Permissions]', () => {
 	});
 
 	test('expect user be show on list', async () => {
-		await admin.usersFilter().type(userToBeCreated.email, { delay: 200 });
-		expect(await admin.userInTable(userToBeCreated.email).isVisible()).toBeTruthy();
+		await admin.inputSearchUsers.type(userToBeCreated.email, { delay: 200 });
+		expect(await admin.getUserInTable(userToBeCreated.email).isVisible()).toBeTruthy();
 	});
 
 	test.describe('disable "userToBeCreated" permissions', () => {
 		test('expect open permissions table', async () => {
-			await admin.permissionsLink().click();
+			await admin.linkPermissions.click();
 		});
 
 		test('expect remove "mention all" permission from user', async () => {
-			await admin.inputPermissionsSearch().type('all');
+			await admin.inputPermissionsSearch.type('all');
 
 			if (await admin.getCheckboxPermission('Mention All').locator('input').isChecked()) {
 				await admin.getCheckboxPermission('Mention All').click();
@@ -63,9 +62,9 @@ test.describe('[Permissions]', () => {
 		});
 
 		test('expect remove "delete message" permission from user', async () => {
-			await admin.inputPermissionsSearch().click({ clickCount: 3 });
+			await admin.inputPermissionsSearch.click({ clickCount: 3 });
 			await page.keyboard.press(BACKSPACE);
-			await admin.inputPermissionsSearch().type('delete');
+			await admin.inputPermissionsSearch.type('delete');
 
 			if (await admin.getCheckboxPermission('Delete Own Message').locator('input').isChecked()) {
 				await admin.getCheckboxPermission('Delete Own Message').click();
@@ -90,9 +89,9 @@ test.describe('[Permissions]', () => {
 		test('expect not be abble to "delete own message"', async () => {
 			await mainContent.doReload();
 			await mainContent.sendMessage(`any_message_${uuid()}`);
-			await mainContent.openMessageActionMenu();
+			await mainContent.doOpenMessageActionMenu();
 
-			expect(await page.isVisible('[data-qa-id="delete-message"]')).toBeFalsy();
+			expect(await page.isVisible('data-qa-id="delete-message"')).toBeFalsy();
 		});
 	});
 });
