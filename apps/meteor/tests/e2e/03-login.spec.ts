@@ -24,7 +24,7 @@ test.describe('[Login]', () => {
 		};
 
 		await login.doLogin(invalidUserPassword);
-		await expect(login.boxToast).toBeVisible();
+		await expect(login.toast).toBeVisible();
 	});
 
 	test('expect user make login', async () => {

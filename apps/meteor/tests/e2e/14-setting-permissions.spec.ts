@@ -24,8 +24,8 @@ test.describe('Rocket.Chat Settings based permissions', () => {
 		test.beforeAll(async () => {
 			await page.goto('/');
 			await login.doLogin(adminLogin);
-			await sideNav.sidebarUserMenu().click();
-			await sideNav.admin().click();
+			await sideNav.sidebarUserMenu.click();
+			await sideNav.admin.click();
 			await admin.linkPermissions.click();
 		});
 
@@ -60,8 +60,8 @@ test.describe('Rocket.Chat Settings based permissions', () => {
 		test.beforeAll(async () => {
 			await page.goto('/');
 			await login.doLogin(validUserInserted);
-			await sideNav.sidebarUserMenu().click();
-			await sideNav.admin().click();
+			await sideNav.sidebarUserMenu.click();
+			await sideNav.admin.click();
 			await admin.linkSettings.click();
 			await admin.btnLayoutSettings.click();
 		});
@@ -80,8 +80,8 @@ test.describe('Rocket.Chat Settings based permissions', () => {
 		test.beforeAll(async () => {
 			await page.goto('/');
 			await login.doLogin(adminLogin);
-			await sideNav.sidebarUserMenu().click();
-			await sideNav.admin().click();
+			await sideNav.sidebarUserMenu.click();
+			await sideNav.admin.click();
 			await admin.linkSettings.click();
 			await admin.inputSearchSettings.type('Layout');
 			await admin.btnLayoutSettings.click();

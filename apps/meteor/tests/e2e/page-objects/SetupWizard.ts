@@ -6,185 +6,177 @@ import { IRegister } from '../utils/interfaces/Login';
 import { BACKSPACE } from '../utils/mocks/keyboardKeyMock';
 
 export class SetupWizard extends BasePage {
-	private nextStep(): Locator {
+	private get btnNextStep(): Locator {
 		return this.page.locator('//button[contains(text(), "Next")]');
 	}
 
-	private fullName(): Locator {
+	private get inputFullName(): Locator {
 		return this.page.locator('[name="fullname"]');
 	}
 
-	private userName(): Locator {
+	private get inputUserName(): Locator {
 		return this.page.locator('[name="username"]');
 	}
 
-	private companyEmail(): Locator {
+	private get inputCompanyEmail(): Locator {
 		return this.page.locator('[name="companyEmail"]');
 	}
 
-	private password(): Locator {
+	private get inputPassword(): Locator {
 		return this.page.locator('[name="password"]');
 	}
 
-	public goToWorkspace(): Locator {
+	get btnConfirm(): Locator {
 		return this.page.locator('//button[contains(text(), "Confirm")]');
 	}
 
-	private organizationType(): Locator {
+	private get inputOrganizationType(): Locator {
 		return this.page.locator('[name="organizationType"]');
 	}
 
-	private organizationTypeSelect(): Locator {
+	private get selectOrganizationType(): Locator {
 		return this.page.locator('.rcx-options .rcx-option:first-child');
 	}
 
-	private organizationName(): Locator {
-		return this.page.locator('[name="organizationName"]');
+	private get inputOrganizationName(): Locator {
+		return this.page.locator('[name="inputOrganizationName"]');
 	}
 
-	private industry(): Locator {
+	private get btnIndustry(): Locator {
 		return this.page.locator('[name="organizationIndustry"]');
 	}
 
-	private industrySelect(): Locator {
+	private get selectIndustry(): Locator {
 		return this.page.locator('.rcx-options .rcx-option:first-child');
 	}
 
-	private size(): Locator {
+	private get organizationSize(): Locator {
 		return this.page.locator('[name="organizationSize"]');
 	}
 
-	private sizeSelect(): Locator {
+	private get selectOrganizationSize(): Locator {
 		return this.page.locator('.rcx-options .rcx-option:first-child');
 	}
 
-	private country(): Locator {
+	private get country(): Locator {
 		return this.page.locator('[name="country"]');
 	}
 
-	private countrySelect(): Locator {
+	private get selectCountry(): Locator {
 		return this.page.locator('.rcx-options .rcx-option:first-child');
 	}
 
-	public registeredServer(): Locator {
+	get registeredServer(): Locator {
 		return this.page.locator('input[name=email]');
 	}
 
-	public registerButton(): Locator {
+	get btnRegister(): Locator {
 		return this.page.locator('//button[contains(text(), "Register")]');
 	}
 
-	public agreementField(): Locator {
+	get agreementField(): Locator {
 		return this.page.locator('//input[@name="agreement"]/../i[contains(@class, "rcx-check-box")]');
 	}
 
-	public standaloneServer(): Locator {
+	get standaloneServer(): Locator {
 		return this.page.locator('//button[contains(text(), "Continue as standalone")]');
 	}
 
-	public standaloneConfirmText(): Locator {
+	get standaloneConfirmText(): Locator {
 		return this.page.locator('//*[contains(text(), "Standalone Server Confirmation")]');
 	}
 
-	private fullNameInvalidText(): Locator {
+	private get fullNameInvalidText(): Locator {
 		return this.page.locator('//input[@name="fullname"]/../following-sibling::span');
 	}
 
-	private userNameInvalidText(): Locator {
+	private get userNameInvalidText(): Locator {
 		return this.page.locator('//input[@name="username"]/../following-sibling::span');
 	}
 
-	private companyEmailInvalidText(): Locator {
+	private get companyEmailInvalidText(): Locator {
 		return this.page.locator('//input[@name="companyEmail"]/../following-sibling::span');
 	}
 
-	private passwordInvalidText(): Locator {
+	private get passwordInvalidText(): Locator {
 		return this.page.locator('//input[@name="password"]/../../../span[contains(@class, "rcx-field__error")]');
 	}
 
-	private industryInvalidSelect(): Locator {
+	private get industryInvalidSelect(): Locator {
 		return this.page.locator('//div[@name="organizationIndustry"]/../following-sibling::span');
 	}
 
-	private sizeInvalidSelect(): Locator {
+	private get sizeInvalidSelect(): Locator {
 		return this.page.locator('//div[@name="organizationSize"]/../following-sibling::span');
 	}
 
-	private countryInvalidSelect(): Locator {
+	private get countryInvalidSelect(): Locator {
 		return this.page.locator('//div[@name="country"]/../following-sibling::span');
 	}
 
-	public async goNext(): Promise<void> {
-		await this.nextStep().click();
-	}
-
-	private stepThreeInputInvalidMail(): Locator {
+	private get stepThreeInputInvalidMail(): Locator {
 		return this.page.locator('//input[@name="email"]/../../span[contains(text(), "This field is required")]');
 	}
 
-	public async stepTwoSuccess(): Promise<void> {
-		await this.organizationName().type(reason);
+	async stepTwoSuccess(): Promise<void> {
+		await this.inputOrganizationName.type(reason);
 
-		await this.organizationType().click();
-		await this.organizationTypeSelect().click();
+		await this.inputOrganizationType.click();
+		await this.selectOrganizationType.click();
 		await expect(this.page.locator('.rcx-options')).toHaveCount(0);
 
-		await this.industry().click();
-		await this.industrySelect().click();
+		await this.btnIndustry.click();
+		await this.selectIndustry.click();
 		await expect(this.page.locator('.rcx-options')).toHaveCount(0);
 
-		await this.size().click();
-		await this.sizeSelect().click();
+		await this.organizationSize.click();
+		await this.selectOrganizationSize.click();
 		await expect(this.page.locator('.rcx-options')).toHaveCount(0);
 
-		await this.country().click();
-		await this.countrySelect().click();
+		await this.country.click();
+		await this.selectCountry.click();
 
-		await this.goNext();
+		await this.btnNextStep.click();
 	}
 
-	public async stepThreeSuccess(): Promise<void> {
-		await this.standaloneServer().click();
+	async stepThreeSuccess(): Promise<void> {
+		await this.standaloneServer.click();
 	}
 
-	public async stepOneFailedBlankFields(): Promise<void> {
-		await this.goNext();
+	async stepOneFailedBlankFields(): Promise<void> {
+		await this.btnNextStep.click();
 
-		await expect(this.fullNameInvalidText()).toBeVisible();
-		await expect(this.userNameInvalidText()).toBeVisible();
-		await expect(this.companyEmailInvalidText()).toBeVisible();
-		await expect(this.passwordInvalidText()).toBeVisible();
+		await expect(this.fullNameInvalidText).toBeVisible();
+		await expect(this.userNameInvalidText).toBeVisible();
+		await expect(this.companyEmailInvalidText).toBeVisible();
+		await expect(this.passwordInvalidText).toBeVisible();
 	}
 
-	public async stepOneFailedWithInvalidEmail(adminCredentials: IRegister): Promise<void> {
-		await this.fullName().type(adminCredentials.name);
-		await this.userName().type(adminCredentials.name);
-		await this.companyEmail().type(INVALID_EMAIL_WITHOUT_MAIL_PROVIDER);
-		await this.password().type(adminCredentials.password);
+	async stepOneFailedWithInvalidEmail(adminCredentials: IRegister): Promise<void> {
+		await this.inputFullName.type(adminCredentials.name);
+		await this.inputUserName.type(adminCredentials.name);
+		await this.inputCompanyEmail.type(INVALID_EMAIL_WITHOUT_MAIL_PROVIDER);
+		await this.inputPassword.type(adminCredentials.password);
 
-		await this.goNext();
+		await this.btnNextStep.click();
 
-		await expect(this.companyEmail()).toBeFocused();
+		await expect(this.inputCompanyEmail).toBeFocused();
 	}
 
-	public async stepTwoFailedWithBlankFields(): Promise<void> {
-		await this.goNext();
+	async stepTwoFailedWithBlankFields(): Promise<void> {
+		await this.btnNextStep.click();
 
-		await expect(this.organizationName()).toBeVisible();
-		await expect(this.industryInvalidSelect()).toBeVisible();
-		await expect(this.sizeInvalidSelect()).toBeVisible();
-		await expect(this.countryInvalidSelect()).toBeVisible();
+		await expect(this.inputOrganizationName).toBeVisible();
+		await expect(this.industryInvalidSelect).toBeVisible();
+		await expect(this.sizeInvalidSelect).toBeVisible();
+		await expect(this.countryInvalidSelect).toBeVisible();
 	}
 
-	public async stepThreeFailedWithInvalidField(): Promise<void> {
-		await this.registeredServer().type(INVALID_EMAIL_WITHOUT_MAIL_PROVIDER);
-		await this.registeredServer().click({ clickCount: 3 });
+	async stepThreeFailedWithInvalidField(): Promise<void> {
+		await this.registeredServer.type(INVALID_EMAIL_WITHOUT_MAIL_PROVIDER);
+		await this.registeredServer.click({ clickCount: 3 });
 		await this.keyPress(BACKSPACE);
 
-		await expect(this.stepThreeInputInvalidMail()).toBeVisible();
-	}
-
-	async goToHome(): Promise<void> {
-		await this.goToWorkspace().click();
+		await expect(this.stepThreeInputInvalidMail).toBeVisible();
 	}
 }

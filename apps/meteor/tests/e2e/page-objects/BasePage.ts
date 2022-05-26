@@ -7,19 +7,19 @@ export abstract class BasePage {
 		this.page = page;
 	}
 
-	get boxToast(): Locator {
+	get toast(): Locator {
 		return this.page.locator('.toast');
 	}
 
-	get boxToastSuccess(): Locator {
+	get toastSuccess(): Locator {
 		return this.page.locator('.toast-message');
 	}
 
-	get boxModalConfirm(): Locator {
+	get modalConfirm(): Locator {
 		return this.page.locator('.rcx-modal .rcx-button--primary-danger');
 	}
 
-	public async keyPress(key: string): Promise<void> {
+	async keyPress(key: string): Promise<void> {
 		await this.page.keyboard.press(key);
 	}
 }

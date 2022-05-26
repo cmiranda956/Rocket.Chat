@@ -28,19 +28,19 @@ test.describe('Permissions', () => {
 
 		await page.goto('/');
 		await login.doLogin(adminLogin);
-		await sideNav.general().click();
+		await sideNav.general.click();
 		await page.goto('/admin/users');
 	});
 
 	test('expect create a user via admin view', async () => {
-		await flexTab.usersAddUserTab().click();
-		await flexTab.usersAddUserName().type(userToBeCreated.name);
-		await flexTab.usersAddUserUsername().type(userToBeCreated.username ?? '');
-		await flexTab.usersAddUserEmail().type(userToBeCreated.email);
-		await flexTab.usersAddUserVerifiedCheckbox().click();
-		await flexTab.usersAddUserPassword().type(userToBeCreated.password);
+		await flexTab.usersAddUserTab.click();
+		await flexTab.inputUserName.type(userToBeCreated.name);
+		await flexTab.inputUserUsername.type(userToBeCreated.username ?? '');
+		await flexTab.inputUserEmail.type(userToBeCreated.email);
+		await flexTab.checkboxUserVerified.click();
+		await flexTab.inputUserPassword.type(userToBeCreated.password);
 		await flexTab.doAddRole('user');
-		await flexTab.usersButtonSave().click();
+		await flexTab.btnUsersSave.click();
 	});
 
 	test('expect user be show on list', async () => {
@@ -77,18 +77,18 @@ test.describe('Permissions', () => {
 			await sideNav.doLogout();
 			await page.goto('/');
 			await login.doLogin(userToBeCreated);
-			await sideNav.general().click();
+			await sideNav.general.click();
 		});
 
 		test('expect not be abble to "mention all"', async () => {
-			await mainContent.sendMessage('@all any_message');
+			await mainContent.doSendMessage('@all any_message');
 
-			expect(mainContent.lastMessage()).toContainText('not allowed');
+			expect(mainContent.lastMessage).toContainText('not allowed');
 		});
 
 		test('expect not be abble to "delete own message"', async () => {
 			await mainContent.doReload();
-			await mainContent.sendMessage(`any_message_${uuid()}`);
+			await mainContent.doSendMessage(`any_message_${uuid()}`);
 			await mainContent.doOpenMessageActionMenu();
 
 			expect(await page.isVisible('data-qa-id="delete-message"')).toBeFalsy();

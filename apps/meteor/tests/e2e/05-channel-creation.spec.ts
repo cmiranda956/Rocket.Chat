@@ -26,14 +26,14 @@ test.describe('[Channel]', async () => {
 		});
 
 		test('expect create privateChannel channel', async () => {
-			await channelCreation.createChannel(channelName, true);
+			await channelCreation.doCreateChannel(channelName, true);
 		});
 
 		test('expect create public channel', async () => {
-			await channelCreation.createChannel(channelName, false);
+			await channelCreation.doCreateChannel(channelName, false);
 		});
 	});
 	test('expect send message to channel created', async () => {
-		await channelCreation.sendMessage(ROCKET_CAT, HELLO);
+		await channelCreation.doSendMessage(ROCKET_CAT, HELLO);
 	});
 });

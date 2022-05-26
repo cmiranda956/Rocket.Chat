@@ -28,8 +28,8 @@ test.describe('Administration', () => {
 
 	test.describe('Admin View', () => {
 		test.beforeAll(async () => {
-			await sideNav.sidebarUserMenu().click();
-			await sideNav.admin().click();
+			await sideNav.sidebarUserMenu.click();
+			await sideNav.admin.click();
 		});
 
 		test.describe('Info', () => {
@@ -155,27 +155,27 @@ test.describe('Administration', () => {
 
 				test.describe('Create user', () => {
 					test.beforeAll(async () => {
-						await flexTab.usersAddUserTab().click();
+						await flexTab.usersAddUserTab.click();
 					});
 
 					test('expect tab user add is rendering', async () => {
-						await expect(flexTab.usersAddUserName()).toBeVisible();
-						await expect(flexTab.usersAddUserUsername()).toBeVisible();
-						await expect(flexTab.usersAddUserEmail()).toBeVisible();
-						await expect(flexTab.usersAddUserVerifiedCheckbox()).toBeVisible();
-						await expect(flexTab.usersAddUserPassword()).toBeVisible();
-						await expect(flexTab.usersAddUserRandomPassword()).toBeVisible();
-						await expect(flexTab.usersAddUserChangePasswordCheckbox()).toBeVisible();
-						await expect(flexTab.usersAddUserRoleList()).toBeVisible();
-						await expect(flexTab.usersAddUserDefaultChannelCheckbox()).toBeVisible();
-						await expect(flexTab.usersAddUserWelcomeEmailCheckbox()).toBeVisible();
-						await expect(flexTab.usersButtonSave()).toBeVisible();
-						await expect(flexTab.usersButtonCancel()).toBeVisible();
+						await expect(flexTab.inputUserName).toBeVisible();
+						await expect(flexTab.inputUserUsername).toBeVisible();
+						await expect(flexTab.inputUserEmail).toBeVisible();
+						await expect(flexTab.checkboxUserVerified).toBeVisible();
+						await expect(flexTab.inputUserPassword).toBeVisible();
+						await expect(flexTab.checkboxUserRandomPassword).toBeVisible();
+						await expect(flexTab.checkboxUserChangePassword).toBeVisible();
+						await expect(flexTab.inputUserRoleList).toBeVisible();
+						await expect(flexTab.checkboxUserDefaultChannel).toBeVisible();
+						await expect(flexTab.checkboxUsersAddUserWelcomeEmail).toBeVisible();
+						await expect(flexTab.btnUsersSave).toBeVisible();
+						await expect(flexTab.usersButtonCancel).toBeVisible();
 
-						await flexTab.usersAddUserTabClose().waitFor();
-						await flexTab.usersAddUserTabClose().click();
+						await flexTab.usersAddUserTabClose.waitFor();
+						await flexTab.usersAddUserTabClose.click();
 
-						await expect(flexTab.addUserTable()).not.toBeVisible();
+						await expect(flexTab.addUserTable).not.toBeVisible();
 					});
 				});
 			});

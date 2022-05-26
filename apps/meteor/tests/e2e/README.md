@@ -26,7 +26,7 @@ We also can pass `PWDEBUG=1` to controll the test execution
 - There are some dependencies between tests, so we can't run the suites in parallel
 
 ## Page Objects
-- Any locator name must start with of one the following prefixes: `btn`, `input`,`text`,`box`
+- Any locator name must start with of one the following prefixes: `btn`, `link`, `input`, `select`, `checkbox`, `text`
 - Any action name should starts with the prefix `do`
 
 ## Important links

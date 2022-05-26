@@ -26,28 +26,28 @@ test.describe('[Main Elements Render]', () => {
 	test.describe('[Side Nav Bar]', () => {
 		test.describe('[Render]', () => {
 			test('expect show the new channel button', async () => {
-				await expect(sideNav.newChannelBtnToolbar()).toBeVisible();
+				await expect(sideNav.newChannelBtnToolbar).toBeVisible();
 			});
 
 			test('expect show "general" channel', async () => {
-				await expect(sideNav.general()).toBeVisible();
+				await expect(sideNav.general).toBeVisible();
 			});
 		});
 
 		test.describe('[Spotlight search bar]', () => {
 			test('expect show spotlight search bar', async () => {
-				await sideNav.spotlightSearchIcon().click();
-				await expect(sideNav.spotlightSearch()).toBeVisible();
+				await sideNav.spotlightSearchIcon.click();
+				await expect(sideNav.spotlightSearch).toBeVisible();
 			});
 
 			test('expect click the spotlight and show the channel list', async () => {
-				await sideNav.spotlightSearch().click();
-				await expect(sideNav.spotlightSearchPopUp()).toBeVisible();
+				await sideNav.spotlightSearch.click();
+				await expect(sideNav.spotlightSearchPopUp).toBeVisible();
 			});
 
 			test('expect add text to the spotlight and show the channel list', async () => {
-				await sideNav.spotlightSearch().type('rocket.cat');
-				await expect(sideNav.spotlightSearchPopUp()).toBeVisible();
+				await sideNav.spotlightSearch.type('rocket.cat');
+				await expect(sideNav.spotlightSearchPopUp).toBeVisible();
 				await page.locator('//*[@data-qa="sidebar-search-result"]//*[@data-index="0"]').click();
 			});
 		});
@@ -55,35 +55,35 @@ test.describe('[Main Elements Render]', () => {
 	test.describe('[User Options]', () => {
 		test.describe('[Render]', () => {
 			test.beforeEach(async () => {
-				await sideNav.sidebarUserMenu().click();
+				await sideNav.sidebarUserMenu.click();
 			});
 
 			test.afterEach(async () => {
-				await sideNav.sidebarUserMenu().click();
+				await sideNav.sidebarUserMenu.click();
 			});
 
 			test('expect show online button', async () => {
-				await expect(sideNav.statusOnline()).toBeVisible();
+				await expect(sideNav.statusOnline).toBeVisible();
 			});
 
 			test('expect show away button', async () => {
-				await expect(sideNav.statusAway()).toBeVisible();
+				await expect(sideNav.statusAway).toBeVisible();
 			});
 
 			test('expect show busy button', async () => {
-				await expect(sideNav.statusBusy()).toBeVisible();
+				await expect(sideNav.statusBusy).toBeVisible();
 			});
 
 			test('expect show offline button', async () => {
-				await expect(sideNav.statusOffline()).toBeVisible();
+				await expect(sideNav.statusOffline).toBeVisible();
 			});
 
 			test('expect show my account button', async () => {
-				await expect(sideNav.account()).toBeVisible();
+				await expect(sideNav.account).toBeVisible();
 			});
 
 			test('expect show logout button', async () => {
-				await expect(sideNav.logout()).toBeVisible();
+				await expect(sideNav.logout).toBeVisible();
 			});
 		});
 	});
@@ -91,50 +91,50 @@ test.describe('[Main Elements Render]', () => {
 	test.describe('[Main Content]', () => {
 		test.describe('[Render]', () => {
 			test.beforeAll(async () => {
-				await sideNav.openChannel('general');
+				await sideNav.doOpenChannel('general');
 			});
 
 			test('expect show the title of the channel', async () => {
-				await expect(mainContent.channelTitle('general')).toBeVisible();
+				await expect(mainContent.textTitleChannel('general')).toBeVisible();
 			});
 
 			test('expect show the empty favorite star (before)', async () => {
-				await expect(mainContent.emptyFavoriteStar()).toBeVisible();
+				await expect(mainContent.emptyFavoriteStar).toBeVisible();
 			});
 
 			test('expect click the empty star', async () => {
-				await mainContent.emptyFavoriteStar().click();
+				await mainContent.emptyFavoriteStar.click();
 			});
 
 			test('expect show the filled favorite star', async () => {
-				await expect(mainContent.favoriteStar()).toBeVisible();
+				await expect(mainContent.btnFavorite).toBeVisible();
 			});
 
 			test('expect click the star', async () => {
-				await mainContent.favoriteStar().click();
+				await mainContent.btnFavorite.click();
 			});
 
 			test('expect show the empty favorite star (after)', async () => {
-				await expect(mainContent.emptyFavoriteStar()).toBeVisible();
+				await expect(mainContent.emptyFavoriteStar).toBeVisible();
 			});
 
 			test('expect show the message input bar', async () => {
-				await expect(mainContent.messageInput()).toBeVisible();
+				await expect(mainContent.inputMessage).toBeVisible();
 			});
 
 			test('expect show the message box actions button', async () => {
-				await expect(mainContent.messageBoxActions()).toBeVisible();
+				await expect(mainContent.messageBoxActions).toBeVisible();
 			});
 
 			test('expect show the audio recording button', async () => {
-				await expect(mainContent.recordBtn()).toBeVisible();
+				await expect(mainContent.btnRecordAudio).toBeVisible();
 			});
 
 			test('expect show the emoji button', async () => {
-				await expect(mainContent.emojiBtn()).toBeVisible();
+				await expect(mainContent.btnPickerEmoji).toBeVisible();
 			});
 			test('expect not show the Admin tag', async () => {
-				await expect(mainContent.lastMessageUserTag()).not.toBeVisible();
+				await expect(mainContent.lastMessageUserTag).not.toBeVisible();
 			});
 		});
 	});
@@ -142,7 +142,7 @@ test.describe('[Main Elements Render]', () => {
 	test.describe('[FlexTab]', () => {
 		test.describe('[Render]', () => {
 			test.beforeAll(async () => {
-				await sideNav.openChannel('general');
+				await sideNav.doOpenChannel('general');
 			});
 
 			test.describe('[Room tab info]', () => {
@@ -155,11 +155,11 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect show the room info button', async () => {
-					await expect(flexTab.channelTab()).toBeVisible();
+					await expect(flexTab.channelTab).toBeVisible();
 				});
 
 				test('expect show the room info tab content', async () => {
-					await expect(flexTab.channelSettings()).toBeVisible();
+					await expect(flexTab.channelSettings).toBeVisible();
 				});
 			});
 
@@ -173,11 +173,11 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect show the message search  button', async () => {
-					await expect(flexTab.searchTab()).toBeVisible();
+					await expect(flexTab.searchTab).toBeVisible();
 				});
 
 				test('expect show the message tab content', async () => {
-					await expect(flexTab.searchTabContent()).toBeVisible();
+					await expect(flexTab.searchTabContent).toBeVisible();
 				});
 			});
 
@@ -191,11 +191,11 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect show the members tab button', () => {
-					expect(flexTab.membersTab().isVisible()).toBeTruthy();
+					expect(flexTab.membersTab.isVisible()).toBeTruthy();
 				});
 
 				test('expect show the members content', async () => {
-					expect(flexTab.membersTabContent().isVisible()).toBeTruthy();
+					expect(flexTab.membersTabContent.isVisible()).toBeTruthy();
 				});
 			});
 
@@ -209,11 +209,11 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect not show the notifications button', async () => {
-					await expect(flexTab.notificationsTab()).not.toBeVisible();
+					await expect(flexTab.notificationsTab).not.toBeVisible();
 				});
 
 				test('expect show the notifications Tab content', async () => {
-					await expect(flexTab.notificationsSettings()).toBeVisible();
+					await expect(flexTab.notificationsSettings).toBeVisible();
 				});
 			});
 
@@ -227,7 +227,7 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect show the files Tab content', async () => {
-					await expect(flexTab.filesTabContent()).toBeVisible();
+					await expect(flexTab.filesTabContent).toBeVisible();
 				});
 			});
 
@@ -241,7 +241,7 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect show the mentions Tab content', async () => {
-					await expect(flexTab.mentionsTabContent()).toBeVisible();
+					await expect(flexTab.mentionsTabContent).toBeVisible();
 				});
 			});
 
@@ -255,7 +255,7 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect show the starred messages Tab content', async () => {
-					await expect(flexTab.starredTabContent()).toBeVisible();
+					await expect(flexTab.starredTabContent).toBeVisible();
 				});
 			});
 
@@ -269,7 +269,7 @@ test.describe('[Main Elements Render]', () => {
 				});
 
 				test('expect show the pinned messages Tab content', async () => {
-					await expect(flexTab.pinnedTabContent()).toBeVisible();
+					await expect(flexTab.pinnedTabContent).toBeVisible();
 				});
 			});
 		});

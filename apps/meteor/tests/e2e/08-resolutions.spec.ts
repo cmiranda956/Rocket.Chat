@@ -29,11 +29,11 @@ test.describe('[Resolution]', () => {
 		test.afterAll(async ({ browser }) => {
 			await initConfig(browser, { viewport: { width: 1600, height: 1600 } });
 
-			await expect(sideNav.spotlightSearchIcon()).toBeVisible();
+			await expect(sideNav.spotlightSearchIcon).toBeVisible();
 		});
 
 		test('expect close the sidenav', async () => {
-			const position = await mainContent.mainContent().boundingBox();
+			const position = await mainContent.mainContent.boundingBox();
 			await expect(position?.x).toEqual(0);
 			await expect(await sideNav.isSideBarOpen()).toBeFalsy;
 		});
@@ -41,60 +41,60 @@ test.describe('[Resolution]', () => {
 		test.describe('moving elements:', async () => {
 			test.beforeEach(async () => {
 				if (!(await sideNav.isSideBarOpen())) {
-					await sideNav.burgerBtn().click({ force: true });
+					await sideNav.btnBurger.click({ force: true });
 				}
 			});
 
 			test('expect open the sidenav', async () => {
-				const position = await mainContent.mainContent().boundingBox();
-				await expect(position?.x).toEqual(0);
-				await expect(await sideNav.isSideBarOpen()).toBeTruthy;
+				const position = await mainContent.mainContent.boundingBox();
+				expect(position?.x).toEqual(0);
+				expect(await sideNav.isSideBarOpen()).toBeTruthy;
 			});
 
 			test('expect not close sidebar on pressing the sidebar item menu', async () => {
-				await sideNav.firstSidebarItemMenu().click();
+				await sideNav.firstSidebarItemMenu.click();
 
-				const position = await mainContent.mainContent().boundingBox();
-				await expect(position?.x).toEqual(0);
+				const position = await mainContent.mainContent.boundingBox();
 
-				await expect(await sideNav.isSideBarOpen()).toBeTruthy;
+				expect(position?.x).toEqual(0);
+				expect(await sideNav.isSideBarOpen()).toBeTruthy;
 
-				await sideNav.firstSidebarItemMenu().click();
+				await sideNav.firstSidebarItemMenu.click();
 			});
 
 			test('expect close the sidenav when open general channel', async () => {
-				await sideNav.openChannel('general');
+				await sideNav.doOpenChannel('general');
 				await expect(await sideNav.isSideBarOpen()).toBeFalsy;
 			});
 
 			test.describe('Preferences', async () => {
 				test.beforeAll(async () => {
 					if (!(await sideNav.isSideBarOpen())) {
-						await sideNav.burgerBtn().click({ force: true });
+						await sideNav.btnBurger.click({ force: true });
 					}
 
-					await sideNav.sidebarUserMenu().click();
-					await sideNav.account().click();
+					await sideNav.sidebarUserMenu.click();
+					await sideNav.account.click();
 				});
 
 				test.afterEach(async () => {
-					await sideNav.returnToMenuInLowResolution().click();
+					await sideNav.returnToMenuInLowResolution.click();
 				});
 
 				test('expect close the sidenav when press the preferences link', async () => {
-					await sideNav.preferences().click();
+					await sideNav.preferences.click();
 					await page.mouse.click(640, 30);
 					await expect(await sideNav.isSideBarOpen()).toBeTruthy;
 				});
 
 				test('expect close the sidenav when press the profile link', async () => {
-					await sideNav.profile().click();
+					await sideNav.profile.click();
 					await page.mouse.click(640, 30);
 					await expect(await sideNav.isSideBarOpen()).toBeTruthy;
 				});
 
 				test('expect close the preferences nav', async () => {
-					await sideNav.preferencesClose().click();
+					await sideNav.preferencesClose.click();
 					await page.mouse.click(640, 30);
 					await expect(await sideNav.isSideBarOpen()).toBeFalsy;
 				});

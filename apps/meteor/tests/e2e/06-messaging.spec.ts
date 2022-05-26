@@ -47,10 +47,10 @@ test.describe('[Messaging]', () => {
 		test.describe('[General channel]', async () => {
 			test.beforeAll(async ({ browser }) => {
 				anotherContext = await createBrowserContextForChat(browser);
-				await anotherContext.sideNav.general().click();
-				await anotherContext.mainContent.sendMessage('Hello');
-				await sideNav.general().click();
-				await mainContent.sendMessage('Hello');
+				await anotherContext.sideNav.general.click();
+				await anotherContext.mainContent.doSendMessage('Hello');
+				await sideNav.general.click();
+				await mainContent.doSendMessage('Hello');
 			});
 
 			test.afterAll(async () => {
@@ -69,10 +69,10 @@ test.describe('[Messaging]', () => {
 		test.describe('[Public channel]', async () => {
 			test.beforeAll(async ({ browser }) => {
 				anotherContext = await createBrowserContextForChat(browser);
-				await anotherContext.sideNav.findForChat('public channel');
-				await anotherContext.mainContent.sendMessage('Hello');
-				await sideNav.findForChat('public channel');
-				await mainContent.sendMessage('Hello');
+				await anotherContext.sideNav.doFindForChat('public channel');
+				await anotherContext.mainContent.doSendMessage('Hello');
+				await sideNav.doFindForChat('public channel');
+				await mainContent.doSendMessage('Hello');
 			});
 
 			test.afterAll(async () => {
@@ -91,10 +91,10 @@ test.describe('[Messaging]', () => {
 		test.describe('[Private channel]', async () => {
 			test.beforeAll(async ({ browser }) => {
 				anotherContext = await createBrowserContextForChat(browser);
-				await anotherContext.sideNav.findForChat('private channel');
-				await anotherContext.mainContent.sendMessage('Hello');
-				await sideNav.findForChat('private channel');
-				await mainContent.sendMessage('Hello');
+				await anotherContext.sideNav.doFindForChat('private channel');
+				await anotherContext.mainContent.doSendMessage('Hello');
+				await sideNav.doFindForChat('private channel');
+				await mainContent.doSendMessage('Hello');
 			});
 
 			test.afterAll(async () => {
@@ -113,10 +113,10 @@ test.describe('[Messaging]', () => {
 		test.describe('[Direct Message]', async () => {
 			test.beforeAll(async ({ browser }) => {
 				anotherContext = await createBrowserContextForChat(browser);
-				await anotherContext.sideNav.findForChat('rocketchat.internal.admin.test');
-				await anotherContext.mainContent.sendMessage('Hello');
-				await sideNav.findForChat('user.name.test');
-				await mainContent.sendMessage('Hello');
+				await anotherContext.sideNav.doFindForChat('rocketchat.internal.admin.test');
+				await anotherContext.mainContent.doSendMessage('Hello');
+				await sideNav.doFindForChat('user.name.test');
+				await mainContent.doSendMessage('Hello');
 			});
 
 			test.afterAll(async () => {
@@ -134,7 +134,7 @@ test.describe('[Messaging]', () => {
 
 		test.describe('[File Upload]', async () => {
 			test.beforeAll(async () => {
-				await sideNav.general().click();
+				await sideNav.general.click();
 			});
 
 			test.describe('[Render]', async () => {
@@ -143,29 +143,29 @@ test.describe('[Messaging]', () => {
 				});
 
 				test('expect modal is visible', async () => {
-					await expect(mainContent.modalTitle()).toHaveText('File Upload');
+					await expect(mainContent.modalTitle).toHaveText('File Upload');
 				});
 
 				test('expect cancel button is visible', async () => {
-					await expect(mainContent.modalCancelButton()).toBeVisible();
+					await expect(mainContent.btnModalCancel).toBeVisible();
 				});
 
 				test('expect confirm button is visible', async () => {
-					await expect(mainContent.buttonSend()).toBeVisible();
+					await expect(mainContent.btnModalSendMessage).toBeVisible();
 				});
 
 				test('expect file preview is visible', async () => {
-					await expect(mainContent.modalFilePreview()).toBeVisible();
+					await expect(mainContent.modalFilePreview).toBeVisible();
 				});
 
 				test('expect file name input is visible', async () => {
-					await expect(mainContent.fileName()).toBeVisible();
-					await expect(mainContent.fileName()).toHaveText('File name');
+					await expect(mainContent.fileName).toBeVisible();
+					await expect(mainContent.fileName).toHaveText('File name');
 				});
 
 				test('expect file description is visible', async () => {
-					await expect(mainContent.fileDescription()).toBeVisible();
-					await expect(mainContent.fileDescription()).toHaveText('File description');
+					await expect(mainContent.fileDescription).toBeVisible();
+					await expect(mainContent.fileDescription).toHaveText('File description');
 				});
 			});
 			test.describe('[Actions]', async () => {
@@ -174,25 +174,25 @@ test.describe('[Messaging]', () => {
 				});
 
 				test('expect not show modal after click in cancel button', async () => {
-					await mainContent.cancelClick();
-					await expect(mainContent.modalFilePreview()).not.toBeVisible();
+					await mainContent.btnModalCancel.click();
+					await expect(mainContent.modalFilePreview).not.toBeVisible();
 				});
 
 				test('expect send file not show modal', async () => {
-					await mainContent.sendFileClick();
-					await expect(mainContent.modalFilePreview()).not.toBeVisible();
+					await mainContent.btnModalSendMessage.click();
+					await expect(mainContent.modalFilePreview).not.toBeVisible();
 				});
 
 				test('expect send file with description', async () => {
-					await mainContent.setDescription();
-					await mainContent.sendFileClick();
-					await expect(mainContent.getFileDescription()).toHaveText('any_description');
+					await mainContent.inputDescription.type('any_description');
+					await mainContent.btnModalSendMessage.click();
+					await expect(mainContent.getFileDescription).toHaveText('any_description');
 				});
 
 				test('expect send file with different file name', async () => {
-					await mainContent.setFileName();
-					await mainContent.sendFileClick();
-					await expect(mainContent.lastMessageFileName()).toContainText('any_file1.txt');
+					await mainContent.inputFileName.fill('any_file1.txt');
+					await mainContent.btnModalSendMessage.click();
+					await expect(mainContent.lastMessageFileName).toContainText('any_file1.txt');
 				});
 			});
 		});
@@ -200,28 +200,28 @@ test.describe('[Messaging]', () => {
 		test.describe('[Messaging actions]', async () => {
 			test.describe('[Usage]', async () => {
 				test.beforeAll(async () => {
-					await sideNav.general().click();
+					await sideNav.general.click();
 				});
 
 				test.describe('[Reply]', async () => {
 					test.beforeAll(async () => {
-						await mainContent.sendMessage('This is a message for reply');
-						await mainContent.openMessageActionMenu();
+						await mainContent.doSendMessage('This is a message for reply');
+						await mainContent.doOpenMessageActionMenu();
 					});
 
 					test('expect reply the message', async () => {
 						await mainContent.selectAction('reply');
-						await flexTab.messageInput().type('this is a reply message');
+						await flexTab.inputMessage.type('this is a reply message');
 						await flexTab.keyPress('Enter');
-						await expect(flexTab.flexTabViewThreadMessage()).toHaveText('this is a reply message');
-						await flexTab.closeThreadMessage().click();
+						await expect(flexTab.flexTabViewThreadMessage).toHaveText('this is a reply message');
+						await flexTab.btnCloseThreadMessage.click();
 					});
 				});
 
 				test.describe('[Edit]', async () => {
 					test.beforeAll(async () => {
-						await mainContent.sendMessage('This is a message for edit');
-						await mainContent.openMessageActionMenu();
+						await mainContent.doSendMessage('This is a message for edit');
+						await mainContent.doOpenMessageActionMenu();
 					});
 
 					test('expect edit the message', async () => {
@@ -231,8 +231,8 @@ test.describe('[Messaging]', () => {
 
 				test.describe('[Delete]', async () => {
 					test.beforeAll(async () => {
-						await mainContent.sendMessage('Message for Message Delete Tests');
-						await mainContent.openMessageActionMenu();
+						await mainContent.doSendMessage('Message for Message Delete Tests');
+						await mainContent.doOpenMessageActionMenu();
 					});
 
 					test('expect message is deleted', async () => {
@@ -244,20 +244,20 @@ test.describe('[Messaging]', () => {
 					const message = `Message for quote Tests - ${Date.now()}`;
 
 					test.beforeAll(async () => {
-						await mainContent.sendMessage(message);
-						await mainContent.openMessageActionMenu();
+						await mainContent.doSendMessage(message);
+						await mainContent.doOpenMessageActionMenu();
 					});
 
 					test('it should quote the message', async () => {
 						await mainContent.selectAction('quote');
-						await expect(mainContent.waitForLastMessageTextAttachmentEqualsText()).toHaveText(message);
+						await expect(mainContent.waitForLastMessageTextAttachmentEqualsText).toHaveText(message);
 					});
 				});
 
 				test.describe('[Star]', async () => {
 					test.beforeAll(async () => {
-						await mainContent.sendMessage('Message for star Tests');
-						await mainContent.openMessageActionMenu();
+						await mainContent.doSendMessage('Message for star Tests');
+						await mainContent.doOpenMessageActionMenu();
 					});
 
 					test('it should star the message', async () => {
@@ -267,8 +267,8 @@ test.describe('[Messaging]', () => {
 
 				test.describe('[Copy]', async () => {
 					test.beforeAll(async () => {
-						await mainContent.sendMessage('Message for copy Tests');
-						await mainContent.openMessageActionMenu();
+						await mainContent.doSendMessage('Message for copy Tests');
+						await mainContent.doOpenMessageActionMenu();
 					});
 
 					test('it should copy the message', async () => {
@@ -278,8 +278,8 @@ test.describe('[Messaging]', () => {
 
 				test.describe('[Permalink]', async () => {
 					test.beforeAll(async () => {
-						await mainContent.sendMessage('Message for permalink Tests');
-						await mainContent.openMessageActionMenu();
+						await mainContent.doSendMessage('Message for permalink Tests');
+						await mainContent.doOpenMessageActionMenu();
 					});
 
 					test('it should permalink the message', async () => {

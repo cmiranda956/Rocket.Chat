@@ -37,6 +37,6 @@ test.describe('[Forgot Password]', () => {
 		await login.inputEmail.type(VALID_EMAIL);
 		await login.btnFormSubmit.click();
 
-		expect(await login.boxToastSuccess.isVisible()).toBeTruthy();
+		expect(await login.toastSuccess.isVisible()).toBeTruthy();
 	});
 });

@@ -42,11 +42,11 @@ test.describe('[Wizard]', () => {
 		});
 
 		test('expect have email field to register the server', async () => {
-			await expect(setupWizard.registeredServer()).toBeVisible();
+			await expect(setupWizard.registeredServer).toBeVisible();
 		});
 
 		test('expect start "Register" button disabled', async () => {
-			await expect(setupWizard.registerButton()).toBeDisabled();
+			await expect(setupWizard.btnRegister).toBeDisabled();
 		});
 
 		test('expect show an error on invalid email', async () => {
@@ -54,13 +54,13 @@ test.describe('[Wizard]', () => {
 		});
 
 		test('expect enable "Register" button when email is valid and terms checked', async () => {
-			await setupWizard.registeredServer().type(VALID_EMAIL);
-			await setupWizard.agreementField().click();
-			await expect(setupWizard.registerButton()).toBeEnabled();
+			await setupWizard.registeredServer.type(VALID_EMAIL);
+			await setupWizard.agreementField.click();
+			await expect(setupWizard.btnRegister).toBeEnabled();
 		});
 
 		test('expect have option for standalone server', async () => {
-			await expect(setupWizard.standaloneServer()).toBeVisible();
+			await expect(setupWizard.standaloneServer).toBeVisible();
 		});
 	});
 
@@ -73,12 +73,12 @@ test.describe('[Wizard]', () => {
 		});
 
 		test('expect confirm the standalone option', async () => {
-			await expect(setupWizard.goToWorkspace()).toBeVisible();
-			await expect(setupWizard.standaloneConfirmText()).toBeVisible();
+			await expect(setupWizard.btnConfirm).toBeVisible();
+			await expect(setupWizard.standaloneConfirmText).toBeVisible();
 		});
 
 		test('expect confirm standalone', async () => {
-			await setupWizard.goToWorkspace().click();
+			await setupWizard.btnConfirm.click();
 			await page.waitForSelector(HOME_SELECTOR);
 		});
 	});
